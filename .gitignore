@@ -1,10 +1,3 @@
-build
-devel
-.catkin_workspace
-.idea
-envs/__pycache__
-envs/*/__pycache__
-
 .cproject
 .project
 .pydevproject
