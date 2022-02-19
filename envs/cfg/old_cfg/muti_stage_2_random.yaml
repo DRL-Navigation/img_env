@@ -1,0 +1,26 @@
+models_name: ['room1','room2','room3','room4','cylinder0', 'cylinder1', 'mbox1', 'mbox2']
+models: ['room_8','room_8','room_8','room_8','cylinder', 'cylinder', 'mbox', 'mbox']
+model_poses_type: ['fix','fix','fix','fix','range', 'range', 'range', 'range']
+models_radius: [0,0,0,0,0.5, 0.5, 0.5, 0.5] #碰撞半径
+models_pose: [[0.0, 0.0],[10.0, 0.0],[-10.0, 0.0],[0.0, -10.0],[7, 13, -3, 3], [7, 13, -3, 3], [7, 13, -3, 3], [7, 13, -3, 3]]
+
+robot_total: 20
+robot_radius: 0.4
+robot_model_name: turtlerobot
+begin_poses_type: ['range_circle','range_circle','range_circle','range_circle','range_circle','range_circle',
+                  'range','range','range','range','range','range',
+                  'range','range','range','range',
+                  'range','range','range','range']
+begin_poses: [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],
+              [7, 13, -3, 3],[7, 13, -3, 3],[7, 13, -3, 3],[7, 13, -3, 3],[7,13, -3, 3],[7, 13, -3, 3],
+              [-12.3,-11.7,-0.6,-0.3,-0.5,0.5],[-12.3,-11.7,0.3,0.6,-0.5,0.5],[-9.7,-9.4,1.7,2.3,-2.07,-1.07],[-10.6,-10.3,1.7,2.3,-2.07,-1.07],
+              [-2.3,-1.7,-10.6,-10.3,-0.5,0.5],[-2.3,-1.7,-9.7,-9.4,-0.5,0.5],[1.7,2.3,-10.6,-10.3,2.64,3.64],[1.7,2.3,-9.7,-9.4,2.64,3.64]]
+target_poses_type: ['circle','circle','circle','circle','circle','circle',
+'range_view','range_view','range_view','range_view','range_view','range_view',
+'range','range','range','range',
+'range','range','range','range']
+target_poses: [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],
+              [6.5,13.5,-3.5,3.5],[6.5, 13.5, -3.5, 3.5],[6.5, 13.5, -3.5, 3.5],[6.5, 13.5, -3.5, 3.5],[6.5, 13.5, -3.5, 3.5],[6.5, 13.5, -3.5, 3.5],
+              [-8.3,-7.7,-0.6,-0.3],[-8.3,-7.7,0.3,0.6],[-9.7,-9.4,-2.3,-1.7],[-10.6,-10.3,-2.3,-1.7],
+              [1.7,2.3,-10.6,-10.3],[1.7,2.3,-9.7,-9.4],[-2.3,-1.7,-10.6,-10.3],[-2.3,-1.7,-9.7,-9.4]]
+buffer_assist: [0,0,0,0,0,0,1,1,1,1,1,1,2,2,2,2,3,3,3,3]

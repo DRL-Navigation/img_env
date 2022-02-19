@@ -1,0 +1,11 @@
+float32[] laser
+sensor_msgs/LaserScan laser_raw
+sensor_msgs/Image laser_image
+sensor_msgs/Image image_no_goal
+geometry_msgs/Pose pose
+geometry_msgs/Pose pose_world
+geometry_msgs/Twist velocity
+geometry_msgs/PointStamped min_dist
+int8 collision
+int8 goal_out
+float32 safety

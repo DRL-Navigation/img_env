@@ -1,0 +1,14 @@
+models_name: ['room']
+models: ['room_8']
+model_poses_type: ['fix']
+models_radius: [0] #碰撞半径
+models_pose: [[0.0, 0.0]]
+
+robot_total: 8
+robot_radius: 0.4
+robot_model_name: turtlerobot
+begin_poses_type: ['range','range','range','range','range','range','range','range']
+begin_poses: [[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3]]
+target_poses_type: ['range_view','range_view','range_view','range_view','range_view','range_view','range_view','range_view']
+target_poses: [[-3.5,3.5,-3.5,3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5,3.5,-3.5,3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5,3.5,-3.5,3.5],[-3.5, 3.5, -3.5, 3.5]]
+

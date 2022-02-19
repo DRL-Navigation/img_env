@@ -1,0 +1,13 @@
+models_name: ['sharp_angle1','sharp_angle2','obtuse_angle1','obtuse_angle2','division1','division2','room']
+models: ['sharp_angle','sharp_angle','obtuse_angle','obtuse_angle','division','division','room_12']
+model_poses_type: ['fix','fix','fix','fix','fix','fix','fix']
+models_radius: [1.1, 1.1, 1.4, 1.4, 0, 0, 0] #碰撞半径
+models_pose: [[2.8,-2,1.4],[-3.2,2.15,1.57],[-1.5,3.1,0.4],[4,-4,-0.3],[-3.4, -2, 0],[-2,-4.2,1.57],[0.0, 0.0]]
+
+robot_total: 1
+robot_radius: 0.5
+robot_model_name: kejiarobot
+begin_poses_type: ['range']
+begin_poses: [[1,5,1,5]]
+target_poses_type: ['range']
+target_poses: [[-5,-3,-5,-3]]

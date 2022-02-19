@@ -1,0 +1,13 @@
+models_name: ['big_box1', 'room']
+models: ['big_box',  'room_8']
+model_poses_type: ['fix', 'fix']
+models_radius: [3, 0] #碰撞半径
+models_pose: [[0.0, 0.0],[0.0, 0.0]]
+
+robot_total: 1
+robot_radius: 0.5
+robot_model_name: kejiarobot
+begin_poses_type: ['range']
+begin_poses: [[-3.5, -2.5, -3, 3]]
+target_poses_type: ['range']
+target_poses: [[2.5,  3.5,  -3, 3]]

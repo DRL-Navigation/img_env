@@ -1,0 +1,14 @@
+models_name: ['division1','division2', 'division3','division4','room']
+models: ['division', 'division','division', 'division','room_8']
+model_poses_type: ['range', 'range', 'range', 'range', 'fix']
+models_radius: [0.3, 0.3, 0.3, 0.3, 0.0] #碰撞半径
+models_pose: [[-2.45, -1.4, 0.0, 0.0, 0.0, 0.0], [1.4, 2.45, 0.0, 0.0, 0.0, 0.0],[-2, 2, 2, 2, 0, 0],[-2, 2, -2, -2, 0, 0],[0.0, 0.0]]
+
+robot_total: 1
+robot_radius: 0.4
+robot_model_name: kejiarobot
+begin_poses_type: ['range']
+begin_poses: [[-3, 3, -3, -3, 1.57, 1.57]]
+target_poses_type: ['range']
+target_poses: [[-3, 3, 3, 3, 1.57, 1.57]]
+

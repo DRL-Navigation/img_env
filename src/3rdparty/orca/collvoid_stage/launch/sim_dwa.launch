@@ -1,0 +1,40 @@
+<launch>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find collvoid_stage)/world/swarmlab_map.yaml">
+    <param name="frame_id" value="/odom" />
+  </node>
+  <rosparam command="load" file="$(find collvoid_stage)/params_created.yaml"/>
+ 
+  <include file="$(find collvoid_stage)/launch/move_base_dwa.launch">
+    <arg name="robot" value="turtlerobot0"/>
+    <arg name="type" value="turtle"/>
+    <arg name="controlled" value="true"/>
+  </include>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controllerRobots" ns="turtlerobot0" output="screen" />
+
+
+  <include file="$(find collvoid_stage)/launch/move_base_dwa.launch">
+    <arg name="robot" value="turtlerobot1"/>
+    <arg name="type" value="turtle"/>
+    <arg name="controlled" value="true"/>
+  </include>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controllerRobots" ns="turtlerobot1" output="screen" />
+
+
+  <include file="$(find collvoid_stage)/launch/move_base_dwa.launch">
+    <arg name="robot" value="turtlerobot2"/>
+    <arg name="type" value="turtle"/>
+    <arg name="controlled" value="true"/>
+  </include>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controllerRobots" ns="turtlerobot2" output="screen" />
+
+
+  <include file="$(find collvoid_stage)/launch/move_base_dwa.launch">
+    <arg name="robot" value="turtlerobot3"/>
+    <arg name="type" value="turtle"/>
+    <arg name="controlled" value="true"/>
+  </include>
+  <node pkg="collvoid_controller" type="controllerRobots.py" name="controllerRobots" ns="turtlerobot3" output="screen" />
+
+
+  <node pkg="collvoid_controller" type="controller.py" name="controller" output="screen"/>
+</launch>

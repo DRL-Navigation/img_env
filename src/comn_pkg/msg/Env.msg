@@ -1,0 +1,9 @@
+string name
+string map_file
+float32 global_resolution
+comn_pkg/Agent[] robots
+comn_pkg/Agent[] obstacles
+comn_pkg/Agent[] peds
+uint32 env_id
+string env_name
+string ped_scene_type

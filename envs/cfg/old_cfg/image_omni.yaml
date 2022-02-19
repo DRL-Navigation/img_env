@@ -1,0 +1,22 @@
+global_map:
+  resolution: 0.1
+  map_file: room_10.png
+view_map:
+  resolution: 0.05
+  width: 6
+  height: 6
+robot:
+  total: 4
+  shape: ['rectangle','rectangle','rectangle','rectangle','rectangle','rectangle','rectangle']
+  size: [[-0.3, 0.3, -0.3, 0.3], [-0.3, 0.3, -0.3, 0.3],[-0.3, 0.3, -0.3, 0.3],[-0.3, 0.3, -0.3, 0.3],[0, 0, 0.3], [0, 0, 0.3], [-0.4, 0.4, -0.4, 0.4], [-0.4, 0.4, -0.4, 0.4], [-0.4, 0.4, -0.4, 0.4]]
+  begin_poses_type: ['range', 'range', 'range', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
+  begin_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  target_poses_type: ['range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
+  target_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+
+object:
+  total: 4
+  shape: ['circle', 'circle', 'rectangle','rectangle']
+  size_range: [[0.2, 1.0], [0.2, 1.0], [-0.15, 0.15, -0.15, 0.15],[-0.15, 0.15, -0.15, 0.15],]
+  poses_type: ['range', 'range', 'range', 'range']
+  poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]

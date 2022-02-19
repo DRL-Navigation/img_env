@@ -1,0 +1,9 @@
+<launch>
+  <arg name="debug" default="true"/>
+  <arg if="$(arg debug)" name="launch_prefix" value="xterm -rv -e gdb -ex run -args"/>
+  <arg unless="$(arg debug)" name="launch_prefix" value=""/>
+
+  <node pkg="cpp_console" type="console_example" args="-name" name="console" output="screen" launch-prefix="$(arg launch_prefix)">
+  </node>
+
+</launch>

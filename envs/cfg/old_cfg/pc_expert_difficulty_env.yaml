@@ -1,0 +1,13 @@
+models_name: ['mbox1', 'mbox2', 'mbox3', 'mbox4', 'mbox5', 'cylinder1', 'cylinder2', 'cylinder3','cylinder4', 'cylinder5', 'cylinder6','cylinder7','room']
+models: ['mbox', 'mbox', 'mbox', 'mbox', 'mbox',  'cylinder', 'cylinder', 'cylinder','cylinder', 'cylinder','cylinder', 'cylinder', 'room_8']
+model_poses_type: ['range', 'range', 'range', 'range', 'range', 'range', 'range', 'range','range', 'range', 'range', 'range', 'fix']
+models_radius: [0.6, 0.6, 0.5, 0.4, 0.5, 0.5, 0.5, 0.5, 0.2, 0.2, 0.1, 0.1, 0] #碰撞半径
+models_pose: [[0, 3, 0, 3], [-3, 0, 0, 3], [-3, 0, -3, 0], [0, 3, -3, 0], [0, 3, 0, 3], [-3, 0, 0, 3], [-3, 0, -3, 0], [0, 3, -3, 0], [-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[0.0, 0.0]]
+
+robot_total: 1
+robot_radius: 0.4
+robot_model_name: kejia
+begin_poses_type: ['range']
+begin_poses: [[-3, 3, -3, 3]]
+target_poses_type: ['range_view']
+target_poses: [[-3,3,-3,3]]

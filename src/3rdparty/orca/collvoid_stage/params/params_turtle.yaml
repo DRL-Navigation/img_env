@@ -1,0 +1,171 @@
+DWAPlannerROS:
+    
+  # Robot Configuration Parameters - Kobuki
+  max_vel_x: 0.6  # 0.55
+  min_vel_x: 0.05
+  
+  max_vel_y: 0.0  # diff drive robot
+  min_vel_y: 0.0  # diff drive robot
+  
+  max_trans_vel: 0.6 # choose slightly less than the base's capability
+  min_trans_vel: 0.1  # this is the min trans velocity when there is negligible rotational velocity
+  trans_stopped_vel: 0.0
+
+  # Warning!
+  #   do not set min_trans_vel to 0.0 otherwise dwa will always think translational velocities
+  #   are non-negligible and small in place rotational velocities will be created.
+
+  max_rot_vel: 0.9  # choose slightly less than the base's capability
+  min_rot_vel: 0.0  # this is the min angular velocity when there is negligible translational velocity
+  rot_stopped_vel: 0.0
+
+  acc_lim_x: 10.0 # maximum is theoretically 2.0, but we
+  acc_lim_theta: 20.0
+  acc_lim_y: 0.0      # diff drive robot
+
+  # Goal Tolerance Parameters
+  yaw_goal_tolerance: 0.3  # 0.05
+  xy_goal_tolerance: 0.2  # 0.10
+  # latch_xy_goal_tolerance: false
+
+  # Forward Simulation Parameters
+  sim_time: 2.0       # 1.7
+  vx_samples: 25      # 3
+  vy_samples: 0       # diff drive robot, there is only one sample
+  vtheta_samples: 40  # 20
+
+  # Trajectory Scoring Parameters
+  path_distance_bias: 20.0      # 32.0   - weighting for how much it should stick to the global path plan
+  goal_distance_bias: 24.0      # 24.0   - wighting for how much it should attempt to reach its goal
+  occdist_scale: 0.5            # 0.01   - weighting for how much the controller should avoid obstacles
+  forward_point_distance: 0.325 # 0.325  - how far along to place an additional scoring point
+  stop_time_buffer: 0.2         # 0.2    - amount of time a robot must stop in before colliding for a valid traj.
+  scaling_speed: 0.25           # 0.25   - absolute velocity at which to start scaling the robot's footprint
+  max_scaling_factor: 0.2       # 0.2    - how much to scale the robot's footprint when at speed.
+
+  # Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.05  # 0.05   - how far to travel before resetting oscillation flags
+
+  # Debugging
+  publish_traj_pc : true
+  publish_cost_grid_pc: true
+  global_frame_id: /odom
+                                                                     
+
+
+CollvoidLocalPlanner:
+  holo_robot: false
+  wheel_base: 0.3
+  
+  max_vel_x: 0.6
+  max_vel_th: 0.9
+  min_vel_x: 0.0
+  min_vel_th: 0.0
+  min_vel_y: 0.0
+  max_vel_y: 0.0
+  min_vel_th_inplace: 0.5
+  acc_lim_x: 10.0
+  acc_lim_y: 5.0
+  acc_lim_th: 20
+
+  max_vel_with_obstacles: 0.5
+
+  footprint_radius: 0.3
+
+TrajectoryPlannerROS:
+  max_vel_x: 0.6
+  min_vel_x: 0.0
+  max_rotational_vel: 0.9
+  min_in_place_rotational_vel: 0.0
+  acc_lim_th: 20
+  acc_lim_x: 10
+  acc_lim_y: 0.50
+  holonomic_robot: false
+  yaw_goal_tolerance: 0.05
+  xy_goal_tolerance: 0.2
+  goal_distance_bias: 0.8
+  path_distance_bias: 0.6
+  sim_time: 1.5
+  heading_lookahead: 0.325
+  oscillation_reset_dist: 0.05
+  vx_samples: 6
+  vtheta_samples: 20
+  dwa: false
+ 
+local_costmap:
+  global_frame: /odom
+  robot_base_frame: base_link
+  update_frequency: 3.0
+  publish_frequency: 2.0
+  static_map: false
+  rolling_window: true
+  width: 4.0
+  height: 4.0
+  resolution: 0.025
+
+  #For this example we'll configure the costmap in voxel-grid mode
+  map_type: voxel
+
+  #Voxel grid specific parameters
+  origin_z: 0.0
+  z_resolution: 0.2
+  z_voxels: 10
+  unknown_threshold: 9
+  mark_threshold: 0
+
+  #Set the tolerance we're willing to have for tf transforms
+  transform_tolerance: 0.3
+
+  #Obstacle marking parameters
+  obstacle_range: 2.5
+  max_obstacle_height: 2.0
+  raytrace_range: 3.0
+
+  robot_radius: 0.3
+  # footprint: [[0.17, 0.17], [-0.17, 0.17], [-0.17, -0.17], [0.17, -0.17]]
+  inflation_radius: 0.25
+  footprint_padding: 0.01
+
+  #Cost function parameters
+  cost_scaling_factor: 10.0
+
+  #The cost at which a cell is considered an obstacle when a map is read from the map_server
+  lethal_cost_threshold: 100
+
+global_costmap:
+  global_frame: /odom
+  robot_base_frame: base_link
+  update_frequency: 3.0
+  publish_frequency: 0.0
+  static_map: true
+  
+  #For this example we'll configure the costmap in voxel-grid mode
+  map_type: voxel
+
+  #Voxel grid specific parameters
+  origin_z: 0.0
+  z_resolution: 0.2
+  z_voxels: 10
+  unknown_threshold: 9
+  mark_threshold: 0
+
+  #Set the tolerance we're willing to have for tf transforms
+  transform_tolerance: 0.3
+
+  #Obstacle marking parameters
+  obstacle_range: 2.5
+  max_obstacle_height: 2.0
+  raytrace_range: 3.0
+
+  robot_radius: 0.3
+  # footprint: [[0.17, 0.17], [-0.17, 0.17], [-0.17, -0.17], [0.17, -0.17]]
+  inflation_radius: 0.25
+  footprint_padding: 0.01
+
+  #Cost function parameters
+  cost_scaling_factor: 10.0
+
+  #The cost at which a cell is considered an obstacle when a map is read from the map_server
+  lethal_cost_threshold: 100
+
+  #Configuration for the sensors that the costmap will use to update a map

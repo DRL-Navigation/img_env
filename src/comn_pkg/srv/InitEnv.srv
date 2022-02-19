@@ -1,0 +1,22 @@
+float32 view_resolution
+float32 view_width
+float32 view_height
+float32 step_hz
+int32 state_dim
+bool is_show_gui
+float32 sleep_t
+uint32 window_height
+uint32 show_image_height
+bool is_draw_step
+uint32 step_draw
+bool use_laser
+uint32 range_total
+float32 view_angle_begin
+float32 view_angle_end
+float32 view_min_dist
+float32 view_max_dist
+float32 beep_r
+float32 ped_ca_p
+uint32 relation_ped_robo
+comn_pkg/Env env
+---

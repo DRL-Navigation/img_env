@@ -1,0 +1,14 @@
+models_name: []
+models: []
+model_poses_type: []
+models_radius: [] #碰撞半径
+models_pose: []
+
+robot_total: 12
+robot_radius: 0.17
+robot_model_name: turtlerobot
+begin_poses_type: ['fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix']
+begin_poses: [[3,0,3.14],[-3,0,0],[0,3,-1.57],[0,-3,1.57],[2.598, 1.5, 3.665], [1.5, 2.598, 4.189], [-1.5, 2.598, -1.047], [-2.598,1.5,-0.524], 
+[-2.598, -1.5, 0.524], [-1.5, -2.598, 1.047], [1.5, -2.598, 2.094], [2.598, -1.5, 2.618]]
+target_poses_type: ['fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix']
+target_poses: [[-3,0],[3,0],[0,-3],[0,3], [-2.598, -1.5],[-1.5, -2.598], [1.5, -2.598], [2.598,-1.5], [2.598,1.5],[1.5, 2.598], [-1.5, 2.598], [-2.598, 1.5]]

@@ -1,0 +1,21 @@
+global_map:
+  resolution: 0.1
+  map_file: room_10.png
+view_map:
+  resolution: 0.015
+  width: 6
+  height: 6
+robot:
+  total: 8
+  shape: ['circle','circle','circle','circle','circle','circle','circle','circle','circle']
+  size: [[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17],[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17]]
+  begin_poses_type: ['fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix']
+  begin_poses: [[3.5,5,0],[3.5,6,0],[6,7.5,-1.57],[5,7.5,-1.57],   [2.5,5,0],[2.5,6,0],[6,8.5,-1.57],[5,8.5,-1.57],    [3.5,5,0],[3.5,6,0],[6,7.5,-1.57],[5,7.5,-1.57]]
+  target_poses_type: ['fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix','fix']
+  target_poses: [[7.5,5],[7.5,6],[6,3.5],[5,3.5],  [8.5,5],[8.5,6],[6,2.5],[5,2.5],   [7.5,5],[7.5,6],[6,3.5],[5,3.5]]
+object:
+  total: 0
+  shape: ['circle', 'circle', 'rectangle', 'rectangle']
+  size_range: [[0.25, 0.35], [0.25, 0.35], [-0.15,0.15,-0.15,0.15], [-0.15,0.15,-0.15,0.15]]
+  poses_type: ['range', 'range', 'range', 'range']
+  poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]

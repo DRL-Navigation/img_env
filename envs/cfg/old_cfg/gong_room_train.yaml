@@ -1,0 +1,13 @@
+models_name: ['mbox1','mbox2', 'room']
+models: ['mbox', 'mbox','train_room_2']
+model_poses_type: ['range', 'range','fix']
+models_radius: [0.5, 0.5, 0.0] #碰撞半径
+models_pose: [[-2, 0, -4, -4, 0, 0], [0, 2, 4, 4, 0, 0], [0.0, 0.0]]
+
+robot_total: 1
+robot_radius: 0.4
+robot_model_name: kejiarobot
+begin_poses_type: ['fix']
+begin_poses: [[-4, -4]]
+target_poses_type: ['fix']
+target_poses: [[4, 4]]

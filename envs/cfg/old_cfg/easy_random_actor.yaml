@@ -1,0 +1,35 @@
+models_name: ['mbox1', 'mbox2', 'mbox3', 'mbox4', 'cylinder0', 'cylinder1', 'cylinder2', 'cylinder3','room',
+              'mbox5', 'mbox6', 'mbox7', 'mbox8','room1', 'cylinder5', 'cylinder6', 'cylinder7', 'cylinder8',
+              'room_wall_1', 'room_wall_2', 'room_wall_3', 'room_wall_4']
+models: ['mbox', 'mbox', 'mbox', 'mbox', 'cylinder',  'cylinder', 'cylinder', 'cylinder', 'room_8',
+          'mbox', 'mbox', 'mbox', 'mbox','room_8','cylinder',  'cylinder', 'cylinder', 'cylinder',
+          'room_wall_1', 'room_wall_2', 'room_wall_3', 'room_wall_4']
+model_poses_type: ['fix', 'fix', 'fix', 'fix', 'fix', 'fix', 'fix', 'fix', 'fix',
+                  'range','range','range','range', 'fix','range','range','range','range',
+                  'fix', 'fix', 'fix', 'fix']
+models_radius: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0,
+               0.5, 0.5, 0.5, 0.5,0,0.5, 0.5, 0.5, 0.5,
+               0, 0, 0, 0] #碰撞半径
+models_pose: [[-3,5], [-5,6], [-5,2], [-2,2], [-2,6], [-5,4], [-6,2], [-2,2], [-4, 4],
+              [2,8,1,7],[2,8,1,7],[2,8,1,7],[2,8,1,7],[5,4],[2,8,1,7],[2,8,1,7],[2,8,1,7],[2,8,1,7],
+              [3.92506,-4.94646,  1.57471], [-0.015441, -1.07515, -3.14154], [0.015354, -8.89435,  3.14159], [-3.94065, -5.000351,  -1.5708]]
+
+robot_total: 3
+robot_radius: 0.17
+robot_model_name: turtlerobot
+begin_poses_type: ['range','range','range']
+begin_poses: [[-7,-1,1,7],[2,8,1,7],[-3, 3, -8, -2]]
+target_poses_type: ['range_view','range_view','range_view']
+target_poses: [[-7,-1,1,7],[2,8,1,7],[-3, 3, -8, -2]]
+
+
+actor_total: 2
+actor_radius: 0.5
+actor_model_name: actor
+actor_begin_poses_type: ['range','range']
+actor_begin_poses: [[-3, 3, -8, -2],[-3, 3, -8, -2]]
+actor_target_poses_type: ['range','range']
+actor_target_poses: [[-3, 3, -8, -2],[-3, 3, -8, -2]]
+
+
+

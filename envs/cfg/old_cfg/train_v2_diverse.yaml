@@ -1,0 +1,13 @@
+models_name: ['triangle1','obtuse_triangle1','arc1','rectangle1','big_cylinder','cylinder1','mbox1','room']
+models: ['triangle','obtuse_triangle','arc','rectangle','big_cylinder','cylinder','mbox','room_8']
+model_poses_type: ['fix','fix','fix','fix','fix','fix','fix','fix']
+models_radius: [1.2, 1.5, 1.1, 0.5, 0.6, 0.3, 0.3, 0] #碰撞半径
+models_pose: [[2.5,0,-0.52],[-2,1.5,0.52],[-2,-1.5,-0.52],[1,2],[0,0],[0.5,-2],[2.5,-2.2],[0.0, 0.0]]
+
+robot_total: 1
+robot_radius: 0.5
+robot_model_name: kejiarobot
+begin_poses_type: ['fix']
+begin_poses: [[3,3,-1.57]]
+target_poses_type: ['fix']
+target_poses: [[-3,-3,-1.57]]

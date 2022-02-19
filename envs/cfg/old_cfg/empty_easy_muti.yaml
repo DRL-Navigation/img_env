@@ -1,0 +1,13 @@
+models_name: ['room','cylinder0', 'cylinder1', 'mbox1', 'mbox2']
+models: ['room_8','mbox', 'mbox', 'cylinder',  'cylinder']
+model_poses_type: ['fix', 'range', 'range', 'range', 'range']
+models_radius: [0,0.5, 0.5, 0.5, 0.5] #碰撞半径
+models_pose: [[0.0, 0.0],[-3, 3, -3, 3], [-3, 3, -3, 3], [-3, 3, -3, 3], [-3, 3, -3, 3]]
+
+robot_total: 6
+robot_radius: 0.5
+robot_model_name: turtlerobot
+begin_poses_type: ['range','range','range','range','range','range']
+begin_poses: [[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3],[-3, 3, -3, 3]]
+target_poses_type: ['range_view','range_view','range_view','range_view','range_view','range_view']
+target_poses: [[-3.5,3.5,-3.5,3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5, 3.5, -3.5, 3.5],[-3.5,3.5,-3.5,3.5],[-3.5, 3.5, -3.5, 3.5]]

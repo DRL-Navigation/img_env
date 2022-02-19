@@ -1,0 +1,21 @@
+/use_sim_time: true
+turtlerobot0:
+    goals:
+        x: [1.6]
+        y: [0]
+        ang: [0]
+turtlerobot1:
+    goals:
+        x: [-1.6]
+        y: [0]
+        ang: [0]
+turtlerobot2:
+    goals:
+        x: [-0]
+        y: [-1.6]
+        ang: [0]
+turtlerobot3:
+    goals:
+        x: [0]
+        y: [1.6]
+        ang: [0]
