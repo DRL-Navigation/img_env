@@ -12,7 +12,6 @@ from copy import deepcopy
 
 from envs.state import ImageState
 from envs.action import *
-from envs.utils import BagRecorder
 
 
 class StatePedVectorWrapper(gym.ObservationWrapper):
@@ -231,48 +230,6 @@ class InfoLogWrapper(gym.Wrapper):
         return states, reward, done, info
 
 
-class BagRecordWrapper(gym.Wrapper):
-    def __init__(self, env, cfg):
-        super(BagRecordWrapper, self).__init__(env)
-        self.bag_recorder = BagRecorder(cfg["bag_record_output_name"])
-        self.record_epochs = int(cfg['bag_record_epochs'])
-        self.episode_res_topic = "/" + cfg['env_name'] + str(cfg['node_id']) + "/episode_res"
-        print("epi_res_topic", self.episode_res_topic, flush=True)
-        self.cur_record_epoch = 0
-
-        self.bag_recorder.record(self.episode_res_topic)
-
-    def _trans2string(self, dones_info):
-        o: List[str] = []
-        for int_done in dones_info:
-            if int_done == 10:
-                o.append("stuck")
-            elif int_done == 5:
-                o.append("arrive")
-            elif 0 < int_done < 4:
-                o.append("collision")
-            else:
-                raise ValueError
-        print(o, flush=True)
-        return o
-
-    def reset(self, **kwargs):
-        if self.cur_record_epoch == self.record_epochs:
-            time.sleep(10)
-            self.bag_recorder.stop()
-        if kwargs.get('dones_info') is not None: # first reset not need
-            self.env.end_ep(self._trans2string(kwargs['dones_info']))
-            self.cur_record_epoch += 1
-        """
-                done info:
-                10: timeout
-                5:arrive
-                1: get collision with static obstacle
-                2: get collision with ped
-                3: get collision with other robot
-                """
-        print(self.cur_record_epoch, flush=True)
-        return self.env.reset(**kwargs)
 
 
 class TestEpisodeWrapper(gym.Wrapper):

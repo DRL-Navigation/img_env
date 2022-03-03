@@ -12,7 +12,6 @@ wrapper_dict = {
     "TimeLimitWrapper": TimeLimitWrapper,
     "MultiRobotCleanWrapper": MultiRobotCleanWrapper,
     "InfoLogWrapper": InfoLogWrapper,
-    "BagRecordWrapper": BagRecordWrapper,
     'TestEpisodeWrapper': TestEpisodeWrapper,
 }
 
