@@ -26,7 +26,6 @@ import os.path as osp
 import os
 
 
-# TODO change 7 and 10 from config
 
 
 def get_pkg_path(pkg_name):
@@ -218,7 +217,6 @@ class ImageEnv(gym.Env):
     def _reset_req(self):
         self.beep_times_ = [0] * self.robot_total
         self.tmp_distances = None
-        # // TODO 多态
         if self.cfg_type == 'yaml':
             self.step_req.is_test = self.reset_req.is_test = self.test
             self.step_req.env_id = self.reset_req.env_id = int(self.node_id)
@@ -462,15 +460,5 @@ class ImageEnv(gym.Env):
                           self.nearby_ped.get()
                           )
 
-# TODO vector env 一个结束了 另一个还在跑，结束的那个要马上reset。 即 reset 和 step 返回的数据应该要一致。
-# TODO 解决方案？ reset 和 step 的 service 为单env 服务？ 缺点： 阻塞了，之后多线程跑不方便，
 
-# TODO 写好文档，reward 怎么包起来。
-# TODO 还有必要单独整一个env吗？ 除了reset obs 这些函数，其他都不需要。
-# TODO 最外面套一层ROS通信类，
-
-# TODO 有一些robot撞了之后，动作可以继续前向，但是送给网络的数据要过滤掉。
-# TODO resolution readme 解释
-
-# TODO reset lasers 也返回数据
 

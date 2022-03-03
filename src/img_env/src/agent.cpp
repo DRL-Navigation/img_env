@@ -185,7 +185,6 @@ bool Agent::cmd(double v, double w,double v_y)
         double cur_control = 0;
         while(cur_control <= step_hz_)
         {
-            // todo 这里角度是360吗
             odom_pose_.x += v * control_hz_ * cos(odom_pose_.z);
             odom_pose_.y += v * control_hz_ * sin(odom_pose_.z);
             vx = v  * cos(odom_pose_.z);

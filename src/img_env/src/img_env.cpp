@@ -1,6 +1,5 @@
 #include "img_env.h"
-// TODO vector env 的好处是什么？ 数据结构清晰
-// TODO python 环境进程只开一个进程就好了，大部分时间还是在c++，并且python里用vector env， 数据结构为numpy也很快。
+
 
 
 ImgEnv::ImgEnv()
@@ -15,26 +14,6 @@ ImgEnv::ImgEnv()
     ROS_INFO("Wait for the python environment to initialize!");
 }
 
-//void ImgEnv::oncmd(const char *cmd)
-//{
-//    float f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
-//    int d1, d2;
-//    char str1[50] = "";
-//    char str2[50] = "";
-//    char str3[50] = "";
-//    char str4[50] = "";
-//    if (PEEK_CMD(cmd, "show"))
-//    {
-//        if (is_show_gui_)
-//            is_show_gui_ = false;
-//        else
-//            is_show_gui_ = true;
-//    }
-//    else if (PEEK_CMD(cmd, "record"))
-//    {
-//        pub_record_ = true;
-//    }
-//}
 void ImgEnv::_init_colors(){
     colors_.push_back(Vec3b(255, 179, 0)); // vivid_yellow
     colors_.push_back(Vec3b(128, 62, 117)); // strong_purple
@@ -142,7 +121,6 @@ void ImgEnv::_init_ped(vector<comn_pkg::Agent> &msg_peds, vector<PedAgent> &peds
     {
             PedAgent ped(msg_peds[k].ktype, step_hz_);
             ped.max_speed = msg_peds[k].max_speed;
-            // TODO 下面3行一行搞定。
             vector<double> ped_size;
             for (int m = 0; m < msg_peds[k].size.size(); m++)
                 ped_size.push_back(msg_peds[k].size[m]);
@@ -165,7 +143,6 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
         // 提取python生成的obs信息
         comn_pkg::Agent obs_msg = req.obstacles[i];
         Agent obs("obs", view_resolution_);
-        // TODO 下面三行应该有一句话的方法
         vector<double> obs_size;
         for (int j = 0; j < obs_msg.size.size(); j++)
             obs_size.push_back(obs_msg.size[j]);
@@ -189,7 +166,6 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
 
     cvtColor(EnvMap_maps_.traj_map_.map_, EnvMap_maps_.traj_map_.map_, COLOR_GRAY2BGR);
 
-    // TODO reinit pub_record_
     if (pub_record_)
         {
             EnvMap_maps_.peds_traj_map_ = EnvMap_maps_.obs_map_;
@@ -212,7 +188,6 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
 
     for (int i=0; i<req.peds.size(); i++)
     {
-        // TODO env.peds = req.peds;
         eps_res_msg.peds_res[i].info = req.peds[i];
         eps_res_msg.peds_res[i].poses.clear();
         eps_res_msg.peds_res[i].vs.clear();
@@ -241,7 +216,6 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
     
     for (int i = 0; i < robot_total_; i++)
     {
-        // TODO put into init
         string robot_name = req.robots[i].name;
         eps_res_msg.robots_res[i].info = req.robots[i];
 //        eps_res_msg.robots_res[i].info.shape = robots_[i].shape_;
@@ -265,7 +239,6 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
         // change position of robots in pedsim
         double pax, pay, pbx, pby;
         robots_[i].get_corners(pax, pay, pbx, pby);
-        // TODO reinit
         if(relation_ped_robo == 1){
             pedscene->setRobotPos(i, pax, pay, pbx, pby, robot_msg.init_pose.position.x, robot_msg.init_pose.position.y,
             0.0, 0.0);
@@ -358,7 +331,6 @@ bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response 
         if (robot_msg.alive == true)
         {
             // step
-            // TODO eps_res_msg 整成一个函数， 这一段只需要cmd这一行以及处理eps_res_msg的就够了
             bool is_arrive = robots_[i].cmd(robot_msg.v, robot_msg.w, robot_msg.v_y);
             eps_res_msg.robots_res[i].vs.push_back(robot_msg.v);
             eps_res_msg.robots_res[i].ws.push_back(robot_msg.w);
@@ -461,7 +433,6 @@ void ImgEnv::view_ped(){
     EnvMap_maps_.peds_map_ =  EnvMap_maps_.obs_map_;
     for(int i = 0;i < peds_.size(); i++){
         string ped_name = peds_[i].name_;
-        // TODO 多态
         if (peds_[i].shape_ == "circle")
         {
             peds_[i].draw(EnvMap_maps_.peds_map_, 1, "world_map", peds_[i].bbox_ );
@@ -485,7 +456,6 @@ void ImgEnv::view_ped(){
 
 void ImgEnv::view_robot(){
     for (int i = 0; i < robot_total_; i++){
-    // TODO: using peds_map_;
         robots_[i].global_map_ = EnvMap_maps_.peds_map_;
         for (int j = 0; j < robot_total_; j++)
         {
@@ -499,7 +469,6 @@ void ImgEnv::view_robot(){
             {
                 for (int j = 0; j < robot_total_; j++)
                 {
-                    // TODO: traj_map_ no peds
                     robots_[j].draw_rgb(EnvMap_maps_.traj_map_, colors_[j], "world_map", robots_[j].bbox_);
                 }
             }
