@@ -11,8 +11,8 @@ agent_num_per_env: 1
 batch_num_per_env: 1
 env_id: 0 # if you set env_num > 1, you should increase env_id when creating envs.
 
-env_name: 'image_ped_circle'
-cfg_name: 'image_ped_circle'
+env_name: 'image_ped_random'
+cfg_name: 'image_ped_random'
 cfg_type: 'yaml'
 
 control_hz: 0.4

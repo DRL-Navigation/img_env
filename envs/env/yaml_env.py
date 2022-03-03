@@ -36,7 +36,7 @@ def get_pkg_path(pkg_name):
 
 def get_map_file(file_name):
     pkg_path = get_pkg_path('img_env')
-    final_file = osp.abspath(osp.join(pkg_path, '../../../', 'envs', 'map', file_name))
+    final_file = osp.abspath(osp.join(pkg_path, '../../', 'envs', 'map', file_name))
     # print(final_file, flush=True)
     return final_file
 

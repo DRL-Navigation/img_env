@@ -1,11 +1,4 @@
 ## img_env
-
-```bash
-sudo apt install libedit-dev
-cd ~/catkin_ws/
-catkin_make --only-pkg-with-deps img_env
-```
-
 please cite：
 
 ```
