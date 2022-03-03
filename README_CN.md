@@ -2,8 +2,6 @@
 
 这是实验室基于传感器sensor map的导航仿真环境, 适配gym的api
 
-安装ubuntu20.04 和 ros 见 [20.04StartUP](https://git.ustc.edu.cn/drl_navigation/startup/-/blob/master/%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2/ubuntu20.04startup.md)
-
 
 ### Quick Start
 
