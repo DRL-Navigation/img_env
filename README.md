@@ -35,7 +35,7 @@ the first param is task name, other params is yaml file，if you want to run dif
 
 `python create_launch.py test A.yaml B.yaml C.yaml`
 
-the generated file are located at `src/drl_nav/img_env/tmp`
+the generated file are located at `src/img_env/tmp`
 
 #### start up ROS
 
@@ -55,7 +55,7 @@ open up a new terminal
 
 #### State Instance
 `envs/state/state.py`
-follow valuse are all type of numpy. the first dim is robot_num.
+following valuse are all type of numpy, and the first dim means robot_num.
 ```
     vector_states,  [robot_num, state_dim] vector，state_dim=3 which means the x,y position and yaw to target
     sensor_maps, [robot_num, batch, 48, 48] egocentric sensor map.
@@ -127,5 +127,15 @@ year = {2020},
 publisher = {Multidisciplinary Digital Publishing Institute},
 doi = {10.3390/s20174836},
 url = {https://www.mdpi.com/1424-8220/20/17/4836}
+};
+
+@inproceedings{yao2021crowd,
+  title={Crowd-Aware Robot Navigation for Pedestrians with Multiple Collision Avoidance Strategies via Map-based Deep Reinforcement Learning},
+  author={Yao, Shunyi and Chen, Guangda and Qiu, Quecheng and Ma, Jun and Chen, Xiaoping and Ji, Jianmin},
+  booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages={8144--8150},
+  year={2021},
+  organization={IEEE}
 }
 ```
+
