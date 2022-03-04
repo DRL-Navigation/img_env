@@ -62,7 +62,7 @@ follow valuse are all type of numpy. the first dim is robot_num.
     is_collisions, [robot_num] 0 means no collision, 1 means get collision with static obstacles, 2 means get collision with pedestrians, 3 means get collision with other robots.
     is_arrives, [robot_num] 1 means reach the goal while 0 is not.
     lasers, [robot_num, laser_range_total] original laser scan data.
-    ped_vector_states, [robot_num, n] one dim 一维行人向量信息，维度n = 1 + vector_number * max_ped_number, 开头的1表示实际ped number
+    ped_vector_states, [robot_num, n] n = 1 + vector_info_number * max_ped_number, where 1 means the real ped number
     ped_maps, [robot_num, 3, 48, 48] egocentric 3-channel pedestrians map, which means x，y velocity and position of the nearby pedestrains.
     step_ds, [robot_num] the distance of getting close to the target each step.
     ped_min_dists, [robot_num] the closest distance of nearby pedestrains, used in reward function.
