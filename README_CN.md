@@ -39,7 +39,7 @@ echo "source `pwd`/devel/setup.bash" >> ~/.bashrc
 
 `python create_launch.py test A.yaml B.yaml C.yaml`
 
-生成的launch文件位于`src/drl_nav/img_env/tmp`下
+生成的launch文件位于`src/img_env/tmp`下
 
 #### 启动ROS
 
@@ -114,8 +114,7 @@ rvo为orca控制,  ervo 为情感类(emitional)的rvo , 在rvo的基础上进行
 
 
 
-
-please cite：
+### 请引用：
 
 ```
 @Article{chen2020distributed,
@@ -129,5 +128,13 @@ year = {2020},
 publisher = {Multidisciplinary Digital Publishing Institute},
 doi = {10.3390/s20174836},
 url = {https://www.mdpi.com/1424-8220/20/17/4836}
+};
+@inproceedings{yao2021crowd,
+  title={Crowd-Aware Robot Navigation for Pedestrians with Multiple Collision Avoidance Strategies via Map-based Deep Reinforcement Learning},
+  author={Yao, Shunyi and Chen, Guangda and Qiu, Quecheng and Ma, Jun and Chen, Xiaoping and Ji, Jianmin},
+  booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages={8144--8150},
+  year={2021},
+  organization={IEEE}
 }
 ```
