@@ -84,7 +84,7 @@ All parameters are set in yaml file, they are sent to C++
 #### pedestrians model
 the 3 regular behaviour of pedestrains:
 
-`pedsim`, `rvo`, `ervo`, thanks to their codes are all opensource, we converge them and put in `3rd_party`
+`pedsim`, `rvo`, `ervo`, thanks to their codes are all opensourced, we converge them and put in `3rd_party`
 
 `pedsim` if controled by SFM,
 
@@ -103,9 +103,9 @@ to change pedestrain behaviour, set yaml file `ped_sim:type` with one of [ `peds
 parameters server
 
 ```
-#close GUI
+# close GUI
 rosparam set /image_ped_circle0/show_gui false
-#open GUI
+# open GUI
 rosparam set /image_ped_circle0/show_gui true
 # `image_ped_circle0` is the node name, which is configured in the yaml file, `env_name`+env_id
 # type `rosnode list` show all nodes
