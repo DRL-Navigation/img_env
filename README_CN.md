@@ -1,14 +1,14 @@
 # img_env
 
 这是中科大实验室基于grid map的导航仿真环境, 适配gym的api
-- **Very fast**, based on C++, customized for robot navigation
-- **Accurate**, not perform physical simulation and time simulation
-- **Parallelization**，support multi-scene and multi-robot
-- **Pedestrian simulation**，contains pedestrian simulation based on Pedsim and ORCA
-- **Gym API**, easy to use in conjunction with other reinforcement learning frameworks
-- **Grid_map output**， directly outputs grid_map or raw laser data
-- **Parameterized configuration**, easily configure environment information via yaml file, including robot shape and number, pedestrian strategy and number, environmental map and other information
-- **Very lightweight**, depends only on OpenCV for visualization
+- **Very fast**, based on C++, customized for robot navigation.
+- **Accurate**, not perform physical simulation and time simulation.
+- **Parallelization**，support multi-scene and multi-robot.
+- **Pedestrian simulation**，contains pedestrian simulation based on Pedsim and ORCA.
+- **Gym API**, easy to use in conjunction with other reinforcement learning frameworks.
+- **Grid_map output**， directly outputs grid_map or raw laser data.
+- **Parameterized configuration**, easily configure environment information via yaml file, including robot shape and number, pedestrian strategy and number, environmental map, and more.
+- **Very lightweight**, only depends on OpenCV for visualization.
 
 ![img_env](example2.jpg)
 
