@@ -7,8 +7,8 @@ A customized grid map-based navigation simulation platform following the Gym API
 - **Pedestrian simulation**，contains pedestrian simulation based on Pedsim and ORCA.
 - **Gym API**, easy to use in conjunction with other reinforcement learning frameworks.
 - **Grid_map output**， directly outputs grid_map or raw laser data.
-- **Parameterized configuration**, easily configure environment information via yaml file, including robot shape and number, pedestrian strategy and number, environmental map, and more.
-- **Very lightweight**, only depends on OpenCV for visualization.
+- **Parameterized configuration**, easily configure environment information via yaml file, including robot shape and size, pedestrian strategy, environmental map, and more.
+- **Very lightweight**, only depends on OpenCV for visualization. 200 robots and 200 obstacles have been simulated.
 
 ![img_env](example2.jpg)
 ### Quick Start
