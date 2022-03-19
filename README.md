@@ -1,6 +1,14 @@
 # img_env
 
 A customized grid map-based navigation simulation platform following the Gym API.
+- **Very fast**, based on C++, customized for robot navigation
+- **Accurate**, not perform physical simulation and time simulation
+- **Parallelization**，support multi-scene and multi-robot
+- **Pedestrian simulation**，contains pedestrian simulation based on Pedsim and ORCA
+- **Gym API**, easy to use in conjunction with other reinforcement learning frameworks
+- **Grid_map output**， directly outputs grid_map or raw laser data
+- **Parameterized configuration**, easily configure environment information via yaml file, including robot shape and number, pedestrian strategy and number, environmental map and other information
+- **Very lightweight**, depends only on OpenCV for visualization
 
 ### Quick Start
 Recommended system environment: Ubuntu20 + ROS noetic + python3
