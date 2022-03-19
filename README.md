@@ -10,6 +10,7 @@ A customized grid map-based navigation simulation platform following the Gym API
 - **Parameterized configuration**, easily configure environment information via yaml file, including robot shape and number, pedestrian strategy and number, environmental map and other information
 - **Very lightweight**, depends only on OpenCV for visualization
 
+![img_env](example2.jpg)
 ### Quick Start
 Recommended system environment: Ubuntu20 + ROS noetic + python3
 
