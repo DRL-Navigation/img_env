@@ -1,8 +1,9 @@
-# drlnav_env
+# img_env
 
-A customized 2D navigation simulation platform following the Gym API.
+A customized grid map-based navigation simulation platform following the Gym API.
 
 ### Quick Start
+Recommended system environment: Ubuntu20 + ROS noetic + python3
 
 ```
 sudo apt-get install libedit-dev
@@ -24,7 +25,7 @@ echo "source `pwd`/devel/setup.bash" >> ~/.bashrc
 ```
 
 #### config yaml file
-Enter envs/cfg to configure the yaml to be run. Note, set `env_num` parameter to run nodes simultaneously.
+Enter ```envs/cfg``` to configure the yaml to be run. Note, set `env_num` parameter to run nodes simultaneously.
 
 #### generate a launch file
 
@@ -86,11 +87,11 @@ the 3 regular behaviour of pedestrains:
 
 `pedsim`, `rvo`, `ervo`, thanks to their codes are all opensourced, we converge them and put in `3rd_party`
 
-`pedsim` if controled by SFM,
+- `pedsim` is controled by SFM
 
-`rvo` is controled by orca,
+- `rvo` is controled by orca
 
-`ervo` denotes the emitional version of rvo
+- `ervo` denotes the emitional version of rvo
 
 to change pedestrain behaviour, set yaml file `ped_sim:type` with one of [ `pedscene`,`rvoscene`,`ervoscene`] 
 
@@ -130,7 +131,8 @@ publisher = {Multidisciplinary Digital Publishing Institute},
 doi = {10.3390/s20174836},
 url = {https://www.mdpi.com/1424-8220/20/17/4836}
 };
-
+```
+```
 @inproceedings{yao2021crowd,
   title={Crowd-Aware Robot Navigation for Pedestrians with Multiple Collision Avoidance Strategies via Map-based Deep Reinforcement Learning},
   author={Yao, Shunyi and Chen, Guangda and Qiu, Quecheng and Ma, Jun and Chen, Xiaoping and Ji, Jianmin},

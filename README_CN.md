@@ -1,16 +1,16 @@
-# drlnav_env
+# img_env
 
-这是实验室基于传感器sensor map的导航仿真环境, 适配gym的api
+这是中科大实验室基于grid map的导航仿真环境, 适配gym的api
 
 
 ### Quick Start
-
+推荐系统环境：Ubuntu20 + ROS noetic + python3
 ```
 sudo apt-get install libedit-dev
 
 git clone git@github.com:DRL-Navigation/img_env.git
 
-cd drlnav_env
+cd img_env
 ```
 
 #### 编译:
@@ -114,7 +114,7 @@ rvo为orca控制,  ervo 为情感类(emitional)的rvo , 在rvo的基础上进行
 
 
 
-### 请引用：
+### 请引用我们的相关论文：
 
 ```
 @Article{chen2020distributed,
@@ -129,6 +129,8 @@ publisher = {Multidisciplinary Digital Publishing Institute},
 doi = {10.3390/s20174836},
 url = {https://www.mdpi.com/1424-8220/20/17/4836}
 };
+```
+```
 @inproceedings{yao2021crowd,
   title={Crowd-Aware Robot Navigation for Pedestrians with Multiple Collision Avoidance Strategies via Map-based Deep Reinforcement Learning},
   author={Yao, Shunyi and Chen, Guangda and Qiu, Quecheng and Ma, Jun and Chen, Xiaoping and Ji, Jianmin},
