@@ -44,7 +44,7 @@ ped_image_r: 0.3 # the radius of pedestrians in ped_image, paper:
 ###########################################
 # ROS CPP NODE PARAMS
 ###########################################
-show_gui: true
+show_gui: false
 sleep_t: 0.
 window_height: 500
 show_image_height: 125

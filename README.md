@@ -158,17 +158,39 @@ url = {https://www.mdpi.com/1424-8220/20/17/4836}
 **chen2020distributed**
 ```
 git clone git@github.com:DRL-Navigation/DDRL4NAV.git --recurse-submodules
+
+cd DDRL4NAV/USTC_lab/env/img_env
+catkin_make --only-pkg-with-deps img_env
+echo "source `pwd`/devel/setup.bash" >> ~/.bashrc
+python create_launch.py sensor_map envs/cfg/sensor_nap.yaml 
+roslaunch img_env sensor_map.launch
+
+# open a new  terminal
 cd DDRL4NAV/sh
 bash start_redis.sh
 bash start.sh config/config_sensor_map.sh
-bash tfboard.sh
+bash tfboard.sh config/config_sensor_map.sh
+
+# show gui
+rosparam set /sensor_map0/show_gui true
 ```
 
 **yao2021crowd**
 ```
 git clone git@github.com:DRL-Navigation/DDRL4NAV.git --recurse-submodules
+
+cd DDRL4NAV/USTC_lab/env/img_env
+catkin_make --only-pkg-with-deps img_env
+echo "source `pwd`/devel/setup.bash" >> ~/.bashrc
+python create_launch.py ped_map envs/cfg/ped_nap.yaml 
+roslaunch img_env ped_map.launch
+
+# open a new  terminal
 cd DDRL4NAV/sh
 bash start_redis.sh
 bash start.sh config/config_ped_map.sh
-bash tfboard.sh
+bash tfboard.sh config/config_ped_map.sh
+
+# show gui
+rosparam set /ped_map0/show_gui true
 ```

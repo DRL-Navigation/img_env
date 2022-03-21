@@ -7,7 +7,7 @@ test: False
 env_type: 'robot_nav'
 robot_type: 'diff'
 env_num: 4
-agent_num_per_env: 8
+agent_num_per_env: 4
 batch_num_per_env: 1
 env_id: 0 # if you set env_num > 1, you should increase env_id when creating envs.
 
@@ -44,7 +44,7 @@ ped_image_r: 0.3 # the radius of pedestrians in ped_image, paper:
 ###########################################
 # ROS CPP NODE PARAMS
 ###########################################
-show_gui: true
+show_gui: false
 sleep_t: 0.
 window_height: 500
 show_image_height: 125
@@ -106,13 +106,13 @@ view_map:
   width: 6
   height: 6
 robot:
-  total: 8
+  total: 4
   shape: ['circle','circle','circle','circle','circle','circle','circle','circle','circle']
   size: [[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17],[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17]]
-  begin_poses_type: ['range_circle', 'range_circle', 'range_circle', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
-  begin_poses: [[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
-  target_poses_type: ['range_circle', 'range_circle', 'range_circle', 'range_view','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
-  target_poses: [[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  begin_poses_type: ['range_circle', 'range_circle', 'range_circle', 'range_circle','range_circle', 'range_circle', 'range_circle', 'range_circle', 'range', 'range', 'range']
+  begin_poses: [[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  target_poses_type: ['range_circle', 'range_circle', 'range_circle', 'range_circle','range_circle', 'range_circle', 'range_circle', 'range_circle', 'range_view', 'range_view', 'range_view']
+  target_poses: [[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
   # sensor_cfgs: [[0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0]]
 object:
   total: 4
