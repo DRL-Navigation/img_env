@@ -141,6 +141,8 @@ doi = {10.3390/s20174836},
 url = {https://www.mdpi.com/1424-8220/20/17/4836}
 };
 ```
+
+
 ```
 @inproceedings{yao2021crowd,
   title={Crowd-Aware Robot Navigation for Pedestrians with Multiple Collision Avoidance Strategies via Map-based Deep Reinforcement Learning},
@@ -152,3 +154,21 @@ url = {https://www.mdpi.com/1424-8220/20/17/4836}
 }
 ```
 
+### Reproduce our paper
+**chen2020distributed**
+```
+git clone git@github.com:DRL-Navigation/DDRL4NAV.git --recurse-submodules
+cd DDRL4NAV/sh
+bash start_redis.sh
+bash start.sh config/config_sensor_map.sh
+bash tfboard.sh
+```
+
+**yao2021crowd**
+```
+git clone git@github.com:DRL-Navigation/DDRL4NAV.git --recurse-submodules
+cd DDRL4NAV/sh
+bash start_redis.sh
+bash start.sh config/config_ped_map.sh
+bash tfboard.sh
+```
