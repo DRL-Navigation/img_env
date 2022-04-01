@@ -125,7 +125,7 @@ rosparam set /image_ped_circle0/show_gui true
 
 
 
-### please cite：
+### please cite:
 
 ```
 @Article{chen2020distributed,
@@ -154,8 +154,8 @@ url = {https://www.mdpi.com/1424-8220/20/17/4836}
 }
 ```
 
-### Reproduce our paper
-**chen2020distributed**
+### Reproduce our works
+**chen2020distributed** Sensors-20
 ```
 git clone git@github.com:DRL-Navigation/DDRL4NAV.git --recurse-submodules
 
@@ -175,7 +175,7 @@ bash tfboard.sh config/config_sensor_map.sh
 rosparam set /sensor_map0/show_gui true
 ```
 
-**yao2021crowd**
+**yao2021crowd** IROS-21
 ```
 git clone git@github.com:DRL-Navigation/DDRL4NAV.git --recurse-submodules
 
