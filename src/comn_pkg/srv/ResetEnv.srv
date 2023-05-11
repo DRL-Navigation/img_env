@@ -3,5 +3,6 @@ comn_pkg/Agent[] robots
 comn_pkg/Agent[] peds
 bool is_test
 uint32 env_id
+bool ignore_obstacle
 ---
 comn_pkg/AgentState[] robot_states

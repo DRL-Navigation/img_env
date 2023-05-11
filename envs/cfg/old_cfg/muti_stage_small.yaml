@@ -1,0 +1,26 @@
+models_name: ['room1','room3','room4']
+models: ['room_8','room_8','room_8']
+model_poses_type: ['fix','fix','fix','fix']
+models_radius: [0,0,0] #碰撞半径
+models_pose: [[0.0, 0.0],[-10.0, 0.0],[0.0, -10.0]]
+
+robot_total: 14
+robot_radius: 0.4
+robot_model_name: turtlerobot
+begin_poses_type: ['range_circle','range_circle','range_circle','range_circle','range_circle','range_circle',
+                 
+                  'fix','fix','fix','fix',
+                  'fix','fix','fix','fix']
+begin_poses: [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],
+              
+              [-12,-0.5,0],[-12,0.5,0],[-9.5,2,-1.57],[-10.5,2,-1.57],
+              [-2,-10.5,0],[-2,-9.5,0],[2,-10.5,3.14],[2,-9.5,3.14]]
+target_poses_type: ['circle','circle','circle','circle','circle','circle',
+
+'fix','fix','fix','fix',
+'fix','fix','fix','fix']
+target_poses: [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],
+              
+              [-8,-0.5],[-8,0.5],[-9.5,-2],[-10.5,-2],
+              [2,-10.5],[2,-9.5],[-2,-10.5],[-2,-9.5]]
+buffer_assist: [0,0,0,0,0,0,1,1,1,1,2,2,2,2]

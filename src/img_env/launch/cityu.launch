@@ -1,0 +1,14 @@
+<launch>
+ <node pkg="img_env" type="img_env_node" name="img_env_env" output="screen" respawn="true">
+  <param name="use_laser" value="true" />
+  <param name="range_total" value="512" />
+  <param name="view_angle_begin" value="-1.570795" />
+  <param name="view_angle_end" value="1.570795" />
+  <param name="view_min_dist" value="0.0" />
+  <param name="view_max_dist" value="100.0" />
+  <param name="show_gui" value="true" />
+  <param name="is_draw_step" value="true" />
+  <param name="window_height" value="500" />
+  <param name="step_draw" value="1" />
+ </node>
+</launch>

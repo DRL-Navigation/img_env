@@ -35,8 +35,12 @@ def get_pkg_path(pkg_name):
 
 def get_map_file(file_name):
     pkg_path = get_pkg_path('img_env')
+    ############## github ######################
     final_file = osp.abspath(osp.join(pkg_path, '../../', 'envs', 'map', file_name))
-    # print(final_file, flush=True)
+    ############## gitlab ######################
+    # final_file = osp.abspath(osp.join(pkg_path, '../../../', 'envs', 'map', file_name))
+
+    print(final_file, flush=True)
     return final_file
 
 
@@ -173,6 +177,8 @@ class ImageEnv(gym.Env):
         self.reset_env_service_name = cpp_node_name + '/reset_image_env' #+ self.node_id
         self.step_env_service_name = cpp_node_name + '/step_image_env'# + self.node_id
         self.end_ep_service_name = cpp_node_name + '/ep_end_image_env'# + self.node_id
+        self.ped_ignore_obstacle = cfg['ped_sim'].get('ignore_obstacle', False)
+        self.laser_norm = cfg.get('laser_norm', True)
 
     def _init_req(self):
         self.init_req.view_resolution = self.view_map_resolution
@@ -214,14 +220,16 @@ class ImageEnv(gym.Env):
             print ( "init env service error" )
             return False
 
-    def _reset_req(self):
+    def _reset_req(self, **kwargs):
         self.beep_times_ = [0] * self.robot_total
         self.tmp_distances = None
+        # // TODO 多态
         if self.cfg_type == 'yaml':
             self.step_req.is_test = self.reset_req.is_test = self.test
             self.step_req.env_id = self.reset_req.env_id = int(self.node_id)
             self.reset_req.obstacles, self.reset_req.robots, self.reset_req.peds = self.env_pose.reset()
 
+            self.reset_req.ignore_obstacle = self.ped_ignore_obstacle
             self.step_req.robots = self.reset_req.robots
         elif self.cfg_type == 'bag':
             if self.reset_index < len(self.reset_reqs) * self.bag_repeat:
@@ -230,9 +238,15 @@ class ImageEnv(gym.Env):
                 rq = self.reset_reqs[self.reset_index % len(self.reset_reqs)]
                 self.reset_req.obstacles, self.reset_req.robots, self.reset_req.peds = rq.obstacles, rq.robots, rq.peds
 
+                self.reset_req.ignore_obstacle = self.reset_req.ignore_obstacle
                 self.step_req.robots = self.reset_req.robots
 
                 self.reset_index += 1
+
+        if kwargs.get("cur_ped_pos_v_datas") is not None:
+            EnvPos.init_ped_dataset(self.reset_req.peds, np.array(kwargs.get("cur_ped_pos_v_datas")))
+
+
             # self.reset_req.robots = self.pyrobots.reset(self.cfg)
             # self.reset_req.peds = self.pypeds.reset(self.cfg)
         # elif self.cfg_type == 'bag':
@@ -281,7 +295,7 @@ class ImageEnv(gym.Env):
 
     def reset(self, fall=0, **kwargs):
 
-        self._reset_req()
+        self._reset_req(**kwargs)
         # call ros reset service
         try:
             rospy.wait_for_service(self.reset_env_service_name)
@@ -338,6 +352,7 @@ class ImageEnv(gym.Env):
                 reset_req.robots = msg.robots
                 reset_req.peds = msg.peds
                 reset_req.is_test = msg.is_test
+                reset_req.ignore_obstacle = msg.ignore_obstacle
                 self.reset_reqs.append(reset_req)
 
         bag.close()
@@ -394,7 +409,6 @@ class ImageEnv(gym.Env):
             if rt.px > 3 or rt.px < -3 or rt.py > 3 or rt.py < -3:
                 continue
             tmx, tmy = -rt.px + 3, -rt.py + 3
-
             # below this need change in future.
             # draw grid which midpoint in circle
             coor_tmx = (tmx - self.ped_image_r) // self.resolution, (tmx + self.ped_image_r) // self.resolution
@@ -422,6 +436,12 @@ class ImageEnv(gym.Env):
         # self.index += 1
 
         return img_data.astype('float16') / 255.0
+
+    def _norm_lasers(self, lasers_) -> np.ndarray:
+        if self.laser_norm:
+            return np.array(lasers_) / self.laser_max
+        else:
+            return np.array(lasers_)
 
     def _get_states(self, robot_states):
         vec_states, sensor_maps, lasers, ped_infos, ped_maps, is_collisions, is_arrives, distances = [], [], [], [], [], [], [], []
@@ -453,12 +473,10 @@ class ImageEnv(gym.Env):
                           np.array(sensor_maps),
                           np.array(is_collisions),
                           np.array(is_arrives),
-                          np.array(lasers) / self.laser_max,
+                          self._norm_lasers(lasers) ,
                           np.array(ped_infos),
                           np.array(ped_maps),
                           step_ds,
-                          self.nearby_ped.get()
+                          np.array(self.nearby_ped.get())
                           )
-
-
 

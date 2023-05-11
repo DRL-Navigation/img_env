@@ -1,0 +1,35 @@
+models_name: ['room','mbox1','rectangle1','rectangle2','cylinder1','big_cylinder1',
+              'arc1','arc2','obtuse_triangle1','obtuse_triangle2','big_cylinder2','triangle1','cylinder2','cylinder3','mbox2','rectangle3',
+              'division1','division2','obtuse_angle1','sharp_angle1',
+              'division3','cylinder4','cylinder5','rectangle4','obtuse_angle2','mbox3','triangle2','arc3','sharp_angle2'
+             ]
+models: ['room_12','mbox','rectangle','rectangle','cylinder','big_cylinder',
+         'arc','arc','obtuse_triangle','obtuse_triangle','big_cylinder','triangle','cylinder','cylinder','mbox','rectangle',
+         'division','division','obtuse_angle','sharp_angle',
+         'division','cylinder','cylinder','rectangle','obtuse_angle','mbox','triangle','arc','sharp_angle'
+        ]
+model_poses_type: ['fix','fix','fix','fix','fix','fix',
+                   'fix','fix','fix','fix','fix','fix','fix','fix','fix','fix',
+                   'fix','fix','fix','fix',
+                   'fix','fix','fix','fix','fix','fix','fix','fix','fix'
+                  ]
+models_radius: [0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0
+               ] #碰撞半径
+models_pose: [[0.0, 0.0],[4.5, 1.5],[4.4, 4.4, 0.785],[1.5, 4.3],[1.5, 1.5],[3,3],
+              [-4,4.8,-2.26],[-1.25,0.5],[-1.65,5],[-3.65,2.4,-0.4],[-3,3.9],[-1.8,3.08],[-4.6,2.6],[-2.3,1.1],[-1.6,2.15],[-4.67,1.06,0.3],
+              [-3.17,-1.15,-0.17],[-3.85,-4.7,0.18],[-1.2,-3.14,-0.18],[-4.1,-2.57,-0.6],
+              [3.68,-1.17,0.07],[2.89,-1.6],[3.47,-5.55],[1.2,-1.8],[2.83,-2.28,1.57],[4.41,-2.28],[1.84,-3.18,0.23],[2.1,-4.5,0.25],[3.95,-4.12]
+             ]
+
+robot_total: 4
+robot_radius: 0.5
+robot_model_name: turtlerobot
+begin_poses_type: ['range', 'range', 'range', 'range']
+begin_poses: [[0,3,0,3], [-3,0,0,3], [-3,0,-3,0], [0,3,-3,0]]
+target_poses_type: ['range', 'range', 'range', 'range']
+target_poses: [[0,3,0,3], [-3,0,0,3], [-3,0,-3,0], [0,3,-3,0]]
+empty_pose: [0.7, 0.7]
+map_check: [True,True,True,True]

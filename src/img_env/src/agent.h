@@ -9,6 +9,7 @@
 #include <opencv2/opencv.hpp>
 #include <tf/tf.h>
 #include "grid_map.h"
+#include "speed_limit.h"
 
 using namespace cv;
 using namespace std;
@@ -51,6 +52,15 @@ public:
     bool view(GridMap& grid_map);
 
     double bresenhamLine(int x1, int y1, int x2, int y2, GridMap& source_map, GridMap &target_map);
+
+    // speed limiter
+    void init_speed_limiter_v(SpeedLimiter limiter_lin){
+        limiter_lin_ = limiter_lin;
+    }
+    void init_speed_limiter_w(SpeedLimiter limiter_ang){
+        limiter_ang_ = limiter_ang;
+    }
+public:
     vector<double> hits_;
     vector<double> hit_points_x_;
     vector<double> hit_points_y_;
@@ -72,7 +82,9 @@ public:
     GridMap view_map_; // 视角图
     GridMap global_map_; // 全局静态地图
 
-    Point2d last_vw_;
+    Point2d last1_vw_;
+    Point2d last0_vw_;
+
     int state_dim_;
     double control_hz_;
     double step_hz_;
@@ -99,6 +111,10 @@ public:
     double vx;
     double vy;
 
+    SpeedLimiter limiter_lin_;
+    SpeedLimiter limiter_ang_;
+
+
 };
 
 /*
@@ -106,29 +122,31 @@ public:
 */
 class PedAgent: public Agent{
 public:
-    PedAgent(string ktype);
-    PedAgent(string ktype, double resolution);
-    void set_params();
-    void set_position(Point3d pose);
-    void update_bbox();
-    void init_shape(string shape, const vector<double> &sizes);
-    geometry_msgs::Point _get_cur_goal();
-    vector<geometry_msgs::Point> trajectory_;
-    int cur_traj_index_;
-    bool arrive(geometry_msgs::Point p);
-    double remaining_dist_;
     Point3d left_leg_;
     Point3d right_leg_;
     double left_leg_r_, right_leg_r_;
     vector<Point2d> left_leg_bbox_, right_leg_bbox_;
     int state_, last_state_;
     double step_len_;
+    double vx;
+    double vy;
+    // traj
+    int cur_traj_index_;
+    double remaining_dist_;
+    vector<geometry_msgs::Point> trajectory_;
+    vector<geometry_msgs::Point> trajectory_v_;
+public:
+    PedAgent(string ktype);
+    PedAgent(string ktype, double resolution);
+    void set_params();
+    void set_position(Point3d pose);
+    void update_bbox();
+    void init_shape(string shape, const vector<double> &sizes);
+    void leg2base(const Point2d &xy_leg, Point2d &xy_base, tf::Transform tf_leg_base);
+    geometry_msgs::Point _get_cur_goal();
+    bool arrive(geometry_msgs::Point p);
     bool draw_leg(GridMap& grid_map, int value);
     bool draw_leg_rgb(GridMap &grid_map, Vec3b value);
     tf::Transform get_leg_base(Point3d& leg);
-    void leg2base(const Point2d &xy_leg, Point2d &xy_base, tf::Transform tf_leg_base);
-
-    double vx;
-    double vy;
 };
 #endif

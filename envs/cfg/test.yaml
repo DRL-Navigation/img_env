@@ -11,8 +11,8 @@ agent_num_per_env: 1
 batch_num_per_env: 1
 env_id: 0 # if you set env_num > 1, you should increase env_id when creating envs.
 
-env_name: 'image_ped_circle'
-cfg_name: 'image_ped_circle'
+env_name: 'test'
+cfg_name: 'test'
 cfg_type: 'yaml'
 
 control_hz: 0.4
@@ -63,8 +63,30 @@ relation_ped_robo: 1
 #########################################
 bag_record_output_name: "test1.bag"
 bag_record_epochs: 5
-init_pose_bag_episodes: 1
+init_pose_bag_episodes: 100
 init_pose_bag_name: "random_4pedgrouptest.bag"
+### speed_limiter, refer to real turtlebot2
+speed_limiter_v:
+  has_velocity_limits: False
+  has_acceleration_limits: False
+  has_jerk_limits: False
+  min_velocity: 0
+  max_velocity: 0.6
+  min_acceleration: -1.6
+  max_acceleration: 5
+  min_jerk: 0
+  max_jerk: 0
+speed_limiter_w:
+  has_velocity_limits: False
+  has_acceleration_limits: False
+  has_jerk_limits: False
+  min_velocity: -0.9
+  max_velocity: 0.9
+  min_acceleration: -0.6
+  max_acceleration: 2
+  min_jerk: 0
+  max_jerk: 0
+
 
 ##########################################
 
@@ -83,9 +105,10 @@ wrapper: [
   'SensorsPaperRewardWrapper',
   'InfoLogWrapper',
   'MultiRobotCleanWrapper',
+  "TestEpisodeWrapper",
   #  'StatePedVectorWrapper',
   'StateBatchWrapper', # statebatch wrapper一般放在最后面
-  'ObsStateTmp',
+  'ObsLaserStateTmp',
   "NeverStopWrapper", # 训练时候，不停的跑，这个要放在最后，因为reset对你之前的状态进行了修改
 
 
@@ -115,7 +138,7 @@ robot:
   target_poses: [[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
   # sensor_cfgs: [[0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0]]
 object:
-  total: 0
+  total: 4
   shape: ['circle',  'rectangle','circle',  'rectangle','circle',  'rectangle','circle',  'rectangle','circle',  'rectangle','circle',  'rectangle']
   size_range: [[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15]]
   poses_type: ['range',  'range','range',  'range','range',  'range','range',  'range','range',  'range','range',  'range']

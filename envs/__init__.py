@@ -2,7 +2,7 @@ import yaml
 
 from typing import Union
 
-from envs.env import ImageEnv
+from envs.env import ImageEnv, RealEnv, GazeboEnv
 from envs.wrapper import wrapper_dict
 
 
@@ -21,7 +21,12 @@ def read_yaml(file: str) -> dict:
 def make_env(cfg: Union[dict, str]):
     if isinstance(cfg, str):
         cfg = read_yaml(cfg)
-    env = ImageEnv(cfg)
+    if cfg['env_type'] == 'robot_nav':
+        env = ImageEnv(cfg)
+    elif cfg['env_type'] == 'real_env':
+        env = RealEnv(cfg)
+    elif cfg['env_type'] == 'gazebo_env':
+        env = GazeboEnv(cfg)
     for env_string in cfg['wrapper']:
         env = wrapper_dict[env_string](env, cfg)
     cfg['node_id'] += 1

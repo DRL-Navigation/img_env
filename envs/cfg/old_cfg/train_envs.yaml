@@ -1,0 +1,45 @@
+world: ['empty', 'room1', 'room2', 'room3', 'room4']
+robot_total: 4
+robot_radius: 0.5
+update_hz: 1
+
+empty:
+  robot_poses_type: onebyone
+  begin_poses: [[3, 0, 0, 0, 0, 3.1415], [-3, 0, 0, 0, 0, 0], [0, 3, 0, 0, 0, -1.57], [0, -3, 0, 0, 0, 1.57]]
+  target_poses: [[-2, 0], [2, 0], [0, -2], [0, 2]]
+  model_poses_type: onebyone
+  models: []
+  models_poses: []
+
+
+room1:
+  robot_poses_type: onebyone
+  begin_poses: [[-5, 3.3, 0, 0, 0, -1.57], [5.1, 1.74, 0, 0, 0, 2.56], [-6, -2.6, 0, 0, 0, 0], [5.7, -3.1, 0, 0, 0, 2.59]]
+  target_poses: [[-2.38, 0.9], [2.36, 0.65], [-2.5, -0.8], [2.36, -1.03]]
+  model_poses_type: onebyone
+  models: ['testspace']
+  models_poses: [[0.0,0.0,0.0, 0.0, 0.0, 0.0]]
+
+room2:
+  robot_poses_type: range
+  begin_poses: [[-4, 4, 3, 4.5]]
+  target_poses: [[-4, 4, -4.5, -3]]
+  model_poses_type: onebyone
+  models: ['train_room_2']
+  models_poses: [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+
+room3:
+  robot_poses_type: range
+  begin_poses: [[-5, 5, -3, -1]]
+  target_poses: [[-5, 5, 2, 4]]
+  model_poses_type: onebyone
+  models: ['train_room_3']
+  models_poses: [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+
+room4:
+  robot_poses_type: range
+  begin_poses: [[-4, 4, -4, -3]]
+  target_poses: [[-4, 4, 3.8, 4.2]]
+  model_poses_type: onebyone
+  models: ['train_room_4']
+  models_poses: [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]

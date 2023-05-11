@@ -3,10 +3,9 @@
   <name>comn_pkg</name>
   <version>1.0.0</version>
   <description>The comn_pkg package</description>
-  <author email="cgdsss@mail.ustc.edu.cn">Guangda Chen</author>
   <maintainer email="cgdsss@mail.ustc.edu.cn">Guangda Chen</maintainer>
-
-  <license>GPLv3</license>
+  <license>TODO</license>
+  <author email="min@example.com">Min Cheng</author>
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>

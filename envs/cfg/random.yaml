@@ -7,12 +7,12 @@ test: False
 env_type: 'robot_nav'
 robot_type: 'diff'
 env_num: 1
-agent_num_per_env: 1
+agent_num_per_env: 2
 batch_num_per_env: 1
 env_id: 0 # if you set env_num > 1, you should increase env_id when creating envs.
 
-env_name: 'image_ped_random'
-cfg_name: 'image_ped_random'
+env_name: 'image_ped_circle'
+cfg_name: 'image_ped_circle'
 cfg_type: 'yaml'
 
 control_hz: 0.4
@@ -44,7 +44,7 @@ ped_image_r: 0.3 # the radius of pedestrians in ped_image, paper:
 ###########################################
 # ROS CPP NODE PARAMS
 ###########################################
-show_gui: false
+show_gui: False
 sleep_t: 0.
 window_height: 500
 show_image_height: 125
@@ -106,32 +106,32 @@ view_map:
   width: 6
   height: 6
 robot:
-  total: 1
+  total: 2
   shape: ['circle','circle','circle','circle','circle','circle','circle','circle','circle']
   size: [[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17],[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17]]
-  begin_poses_type: ['range', 'range', 'range', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
-  begin_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
-  target_poses_type: ['range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
-  target_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  begin_poses_type: ['range', 'range', 'range_circle', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
+  begin_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  target_poses_type: [range_view', 'range_view', 'range_circle', 'range_view','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
+  target_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
   # sensor_cfgs: [[0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0]]
 object:
-  total: 0
+  total: 4
   shape: ['circle',  'rectangle','circle',  'rectangle','circle',  'rectangle','circle',  'rectangle','circle',  'rectangle','circle',  'rectangle']
   size_range: [[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15],[0.3, 0.3],[-0.15,0.15,-0.15,0.15]]
   poses_type: ['range',  'range','range',  'range','range',  'range','range',  'range','range',  'range','range',  'range']
   poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
 
 ped_sim:
-  total: 8
-  type: 'rvoscene' # you can choose pedscene, rvoscene, ervoscene
+  total: 4
+  type: 'pedscene' # you can choose pedscene, rvoscene, ervoscene
   max_speed: [0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]
   shape: ['leg','leg','leg','leg','leg','leg','leg','leg','circle','circle','circle','circle','circle']
   size: [[0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0.1, 0.1], [0, 0, 0.17]]
-  begin_poses_type: ['range', 'range', 'range', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
-  begin_poses:  [[2.5, 4.5, 2.5, 4.5], [2.5, 4.5, 6.5, 8.5], [6.5, 8.5, 6.5, 8.5], [6.5, 8.5, 2.5, 4.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
-  target_poses_type: ['range', 'range', 'range', 'range','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
-  target_poses:  [[6.5, 8.5, 6.5, 8.5], [6.5, 8.5, 2.5, 4.5], [2.5, 4.5, 2.5, 4.5], [2.5, 4.5, 6.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
-  go_back: "yes" # yes: all ped go back after hit the goal again and again, "random": random choose, "no": none of ped
+  begin_poses_type: ['range','range','range','range','range_circle','range_circle','range_circle','range_circle', 'range', 'range', 'range', 'range','range', 'range', 'range', 'range']
+  begin_poses: [[2.5, 4.5, 2.5, 4.5], [2.5, 4.5, 6.5, 8.5], [6.5, 8.5, 6.5, 8.5], [6.5, 8.5, 2.5, 4.5],[5.5,5.5], [5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[1.5, 9.5, 1.5, 9.5],[1.5, 9.5, 1.5, 9.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[1.5, 9.5, 1.5, 9.5],[1.5, 9.5, 1.5, 9.5], [1.5, 9.5, 1.5, 9.5],[1.5, 9.5, 1.5, 9.5], [2.5, 8.5, 2.5, 8.5]]
+  target_poses_type: ['range','range','range','range','range_circle','range_circle','range_circle','range_circle','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
+  target_poses: [[6.5, 8.5, 6.5, 8.5], [6.5, 8.5, 2.5, 4.5], [2.5, 4.5, 2.5, 4.5], [2.5, 4.5, 6.5, 8.5], [5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[5.5,5.5],[1.5, 9.5, 1.5, 9.5],[1.5, 9.5, 1.5, 9.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[1.5, 9.5, 1.5, 9.5],[1.5, 9.5, 1.5, 9.5], [1.5, 9.5, 1.5, 9.5],[1.5, 9.5, 1.5, 9.5], [2.5, 8.5, 2.5, 8.5]]
+  go_back: "random" # yes: all ped go back after hit the goal again and again, "random": random choose, "no": none of ped
 target_min_dist: 1.0 # min distance between start point to target point.
 
-node_id: 0
+node_id: 1

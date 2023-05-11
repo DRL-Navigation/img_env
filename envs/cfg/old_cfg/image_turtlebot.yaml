@@ -1,0 +1,32 @@
+global_map:
+  resolution: 0.1
+  map_file: room_10.png
+view_map:
+  resolution: 0.015
+  width: 6
+  height: 6
+robot:
+  total: 8
+  shape: ['circle','circle','circle','circle','circle','circle','circle','circle','circle']
+  size: [[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17],[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17]]
+  begin_poses_type: ['range', 'range', 'range', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
+  begin_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  target_poses_type: ['range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
+  target_poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  # sensor_cfgs: [[0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0], [0.14, 0]]
+object:
+  total: 4
+  shape: ['circle', 'circle', 'rectangle', 'rectangle']
+  size_range: [[0.2, 0.7], [0.2, 0.7], [-0.3, 0.3, -0.3, 0.3], [-0.15, 0.15, -0.15, 0.15]]
+  poses_type: ['range', 'range', 'range', 'range']
+  poses: [[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+
+ped_sim:
+  total: 0
+  shape: ['circle','circle','circle','circle','circle','circle','circle','circle','circle']
+  size: [[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.3], [0, 0, 0.17],[0, 0, 0.17], [0, 0, 0.17], [0, 0, 0.17]]
+  begin_poses_type: ['range', 'range', 'range', 'range','range', 'range', 'range', 'range','range', 'range', 'range', 'range']
+  begin_poses:  [[2.5, 4.5, 2.5, 4.5], [2.5, 4.5, 6.5, 8.5], [6.5, 8.5, 6.5, 8.5], [6.5, 8.5, 2.5, 4.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  target_poses_type: ['range', 'range', 'range', 'range','range_view', 'range_view', 'range_view', 'range_view','range_view', 'range_view', 'range_view', 'range_view']
+  target_poses:  [[6.5, 8.5, 6.5, 8.5], [6.5, 8.5, 2.5, 4.5], [2.5, 4.5, 2.5, 4.5], [2.5, 4.5, 6.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5],[2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5], [2.5, 8.5, 2.5, 8.5]]
+  
