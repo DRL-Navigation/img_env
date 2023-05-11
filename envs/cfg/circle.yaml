@@ -15,12 +15,13 @@ env_name: 'image_ped_circle'
 cfg_name: 'image_ped_circle'
 cfg_type: 'yaml'
 
-control_hz: 0.4
-time_max: 100
+control_hz: 0.1
+time_max: 150
 robot_radius: 0.17
 ped_leg_radius: 0.1
 ped_safety_space: 0.7
 laser_max: 6.0
+laser_norm: true
 image_batch: 1
 image_size: [48, 48]
 ped_image_size: [48, 48]
@@ -35,6 +36,29 @@ discrete_actions: [[0.0, -0.9], [0.0, -0.6], [0.0, -0.3], [0.0, 0.05], [0.0, 0.3
              [0.4, -0.9], [0.4, -0.6], [0.4, -0.3], [0.4, 0], [0.4, 0.3], [0.4, 0.6], [0.4, 0.9],
              [0.6, -0.9], [0.6, -0.6], [0.6, -0.3], [0.6, 0], [0.6, 0.3], [0.6, 0.6], [0.6, 0.9]]
 continuous_actions: [ [0, 0.6] , [-0.9, -0.9] ] #  linear velocity(v) range and rotation velocity(w) range
+### speed_limiter
+speed_limiter_v:
+  has_velocity_limits: True
+  has_acceleration_limits: True
+  has_jerk_limits: False
+  min_velocity: 0
+  max_velocity: 0.6
+  min_acceleration: -2
+  max_acceleration: 2
+  min_jerk: 0
+  max_jerk: 0
+speed_limiter_w:
+  has_velocity_limits: True
+  has_acceleration_limits: True
+  has_jerk_limits: False
+  min_velocity: -0.9
+  max_velocity: 0.9
+  min_acceleration: -3
+  max_acceleration: 3
+  min_jerk: 0
+  max_jerk: 0
+
+
 circle_ranges: [1.8, 2.0] # only used in circle env
 
 max_ped: 10
@@ -44,7 +68,7 @@ ped_image_r: 0.3 # the radius of pedestrians in ped_image, paper:
 ###########################################
 # ROS CPP NODE PARAMS
 ###########################################
-show_gui: true
+show_gui: True
 sleep_t: 0.
 window_height: 500
 show_image_height: 125
@@ -85,7 +109,7 @@ wrapper: [
   'MultiRobotCleanWrapper',
   #  'StatePedVectorWrapper',
   'StateBatchWrapper', # statebatch wrapper一般放在最后面
-  'ObsStateTmp',
+  'ObsLaserStateTmp',
   "NeverStopWrapper", # 训练时候，不停的跑，这个要放在最后，因为reset对你之前的状态进行了修改
 
 

@@ -1,11 +1,31 @@
 import random
 import math
+import numpy as np
 
 from envs.utils import ros_utils
 
 from typing import List
 from comn_pkg.msg import Agent as MsgAgent
+from comn_pkg.msg import SpeedLimiter
+from geometry_msgs.msg import Point
 from copy import deepcopy
+
+
+def get_robot_radius(s1: List, s2: str):
+    o = 0
+    if s2 == 'circle':
+        o = s1[2]
+    elif s2 == 'rectangle':
+        o = math.sqrt(s1[0] ** 2 + s1[2] ** 2)
+    elif s2 == 'leg':
+        o = s1[-1] + s1[-2]
+    elif s2 == 'L':
+        o = math.sqrt(s1[1] ** 2 + s1[3] ** 2)
+    elif s2 == 'sweep':
+        o = s1[3] + s1[1]  # math.sqrt(s1[1] ** 2 + s1[3] ** 2)
+    return o
+
+
 
 def random_noise(random_pose):
     random_pose[0] += random.gauss(0, 0.5)
@@ -144,8 +164,30 @@ class EnvPos:
             obs_.append(obs)
         return obs_
 
+    def _get_robo_ped_module_size(self, size, shape):
+        list_o = []
+
+        for i in range(len(size)):
+            s1 = size[i]
+            s2 = shape[i]
+            if s2 == 'circle':
+                o = s1[2]
+            elif s2 == 'rectangle':
+                o = math.sqrt(s1[0] ** 2 + s1[2] ** 2)
+            elif s2 == 'leg':
+                o = s1[-1] + s1[-2]
+            elif s2 == 'L':
+                o = math.sqrt(s1[1] ** 2 + s1[3] ** 2)
+            elif s2 == 'sweep':
+                o = s1[3] + s1[1]  # math.sqrt(s1[1] ** 2 + s1[3] ** 2)
+            else:
+                raise ValueError
+            list_o.append(o)
+        return list_o
+
+
     def _reset_robot_ped(self):
-        robo_ped_num = self.cfg['ped_sim']['total'] + self.cfg['robot']['total']
+        robo_ped_num = self.cfg['robot']['total'] + self.cfg['ped_sim']['total']
         ped_num = self.cfg['ped_sim']['total']
         robo_num = self.cfg['robot']['total']
         robo_ped_begin_poses_type = self.cfg['robot']['begin_poses_type'][:robo_num] + self.cfg['ped_sim']['begin_poses_type'][:ped_num]
@@ -153,6 +195,8 @@ class EnvPos:
         robo_ped_begin_poses = self.cfg['robot']['begin_poses'][:robo_num] + self.cfg['ped_sim']['begin_poses'][:ped_num]
         robo_ped_target_poses = self.cfg['robot']['target_poses'][:robo_num] + self.cfg['ped_sim']['target_poses'][:ped_num]
         robo_ped_sizes = self.cfg['robot']['size'][:robo_num] + self.cfg['ped_sim']['size'][:ped_num]
+        robo_ped_shape = self.cfg['robot']['shape'][:robo_num] + self.cfg['ped_sim']['shape'][:ped_num]
+        robo_ped_module_size = self._get_robo_ped_module_size(robo_ped_sizes, robo_ped_shape)
         self.init_poses = [None] * robo_ped_num
         self.target_poses = [None] * robo_ped_num
         circle_range = random.uniform(self.cfg['circle_ranges'][0], self.cfg['circle_ranges'][1])
@@ -199,7 +243,7 @@ class EnvPos:
                                 elif len(pose_range) == 6:
                                     rand_pose = _random_pose(pose_range[:2], pose_range[2:4], pose_range[4:6])
                             if free_check_robo_ped(rand_pose[0], rand_pose[1], self.init_poses) and \
-                                    free_check_obj([rand_pose[0], rand_pose[1], robo_ped_sizes[i][2] * 2],
+                                    free_check_obj([rand_pose[0], rand_pose[1], robo_ped_module_size[i] * 2],
                                                         self.obs_range):
                                 self.init_poses[i] = rand_pose[:]
                                 reset_init = False
@@ -244,7 +288,7 @@ class EnvPos:
                             if (self.init_poses[i][0] - rand_pose[0]) ** 2 + (
                                     self.init_poses[i][1] - rand_pose[1]) ** 2 > self.cfg['target_min_dist'] ** 2 \
                                     and free_check_robo_ped(rand_pose[0], rand_pose[1], self.target_poses) and \
-                                    free_check_obj([rand_pose[0], rand_pose[1], robo_ped_sizes[i][2] * 2], self.obs_range,
+                                    free_check_obj([rand_pose[0], rand_pose[1], robo_ped_module_size[i] * 2], self.obs_range,
                                                         ):
                                 # 成功找到终点
                                 self.target_poses[i] = rand_pose[:]
@@ -300,6 +344,33 @@ class EnvPos:
             peds_msg.append(ped)
         return robots_msg, peds_msg, flag
 
+
+    def _init_speed_limiter(self):
+        speed_limiter_v = SpeedLimiter()
+        speed_limiter_w = SpeedLimiter()
+        if self.cfg.get("speed_limiter_v"):
+            speed_limiter_v.has_velocity_limits = self.cfg['speed_limiter_v'].get("has_velocity_limits", False)
+            speed_limiter_v.has_acceleration_limits = self.cfg['speed_limiter_v'].get("has_acceleration_limits", False)
+            speed_limiter_v.has_jerk_limits = self.cfg['speed_limiter_v'].get("has_jerk_limits", False)
+            speed_limiter_v.min_velocity = self.cfg['speed_limiter_v'].get("min_velocity", 0)
+            speed_limiter_v.max_velocity = self.cfg['speed_limiter_v'].get("max_velocity", 0.6)
+            speed_limiter_v.min_acceleration = self.cfg['speed_limiter_v'].get("min_acceleration", -2)
+            speed_limiter_v.max_acceleration = self.cfg['speed_limiter_v'].get("max_acceleration", 2)
+            speed_limiter_v.min_jerk = self.cfg['speed_limiter_v'].get("min_jerk", -2)
+            speed_limiter_v.max_jerk = self.cfg['speed_limiter_v'].get("max_jerk", 2)
+        if self.cfg.get("speed_limiter_w"):
+            speed_limiter_w.has_velocity_limits = self.cfg['speed_limiter_w'].get("has_velocity_limits", False)
+            speed_limiter_w.has_acceleration_limits = self.cfg['speed_limiter_w'].get("has_acceleration_limits", False)
+            speed_limiter_w.has_jerk_limits = self.cfg['speed_limiter_w'].get("has_jerk_limits", False)
+            speed_limiter_w.min_velocity = self.cfg['speed_limiter_w'].get("min_velocity", -0.9)
+            speed_limiter_w.max_velocity = self.cfg['speed_limiter_w'].get("max_velocity", 0.9)
+            speed_limiter_w.min_acceleration = self.cfg['speed_limiter_w'].get("min_acceleration", -2)
+            speed_limiter_w.max_acceleration = self.cfg['speed_limiter_w'].get("max_acceleration", 2)
+            speed_limiter_w.min_jerk = self.cfg['speed_limiter_w'].get("min_jerk", -2)
+            speed_limiter_w.max_jerk = self.cfg['speed_limiter_w'].get("max_jerk", 2)
+
+        return speed_limiter_v, speed_limiter_w
+
     def init_robot(self):
         robots_msg = []
         for j in range(self.cfg['robot']['total']):
@@ -313,6 +384,11 @@ class EnvPos:
                 robot.sensor_cfg = self.cfg['robot']['sensor_cfgs'][j]
             else:
                 robot.sensor_cfg = [0.0, 0.0]
+            # assume all robot maintains the same robot control params,
+            speed_limiter_v, speed_limiter_w = self._init_speed_limiter()
+            robot.speed_limiter_v = speed_limiter_v
+            robot.speed_limiter_w = speed_limiter_w
+
             robots_msg.append(robot)
         return robots_msg
 
@@ -338,6 +414,24 @@ class EnvPos:
     def init_obs(self):
         pass
 
+    @staticmethod
+    def init_ped_dataset(peds, ped_pos_v_datas: np.array):
+        i = 0
+        for ped in peds:
+            ped_pos = ped_pos_v_datas[i][:, :3]
+            ped_vx_vy = ped_pos_v_datas[i][:, 3:]
+            ped.trajectory = [Point(x, y, z) for x,y,z in ped_pos]
+            ped.trajectory_v = [Point(x, y, 0) for x,y in ped_vx_vy]
+            ped.init_pose.position.x = ped_pos[0][0]
+            ped.init_pose.position.y = ped_pos[0][1]
+            q = ros_utils.rpy_to_q([0, 0, ped_pos[0][2]])
+            ped.init_pose.orientation.x = q[0]
+            ped.init_pose.orientation.y = q[1]
+            ped.init_pose.orientation.z = q[2]
+            ped.init_pose.orientation.w = q[3]
+
+            i += 1
+        return
 
 if __name__  == "__main__":
     from env_test import read_yaml

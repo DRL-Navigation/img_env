@@ -108,6 +108,10 @@ public:
     bool _end_ep(comn_pkg::EndEp::Request &req, comn_pkg::EndEp::Response &res);
     bool _reset(comn_pkg::ResetEnv::Request &req,comn_pkg::ResetEnv::Response &res);
     bool _step(comn_pkg::StepEnv::Request &req,comn_pkg::StepEnv::Response &res);
+    void _step_ped(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res);
+    void _step_ped_normal(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res);
+    void _step_ped_dataset(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res);
+    void _step_robot(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res);
 
     void _init_env_map(comn_pkg::Env &msg_env);
     void _init_param_from_py(comn_pkg::InitEnv::Request &req);
@@ -169,3 +173,50 @@ public:
 
 
 };
+
+//class SpeedLimiterParams{
+//public:
+//    bool has_velocity_limits_ ;
+//    bool has_acceleration_limits_ ;
+//    bool has_jerk_limits_  ;
+//    double max_velocity_;
+//    double min_velocity_ ;
+//    double max_acceleration_;
+//    double min_acceleration_ ;
+//    double max_jerk_;
+//
+//    SpeedLimiterParams(
+//    bool has_velocity_limits,
+//    bool has_acceleration_limits,
+//    bool has_jerk_limits,
+//    double min_velocity,
+//    double max_velocity,
+//    double min_acceleration,
+//    double max_acceleration,
+//    double min_jerk,
+//    double max_jerk
+//    )
+//      : has_velocity_limits_(has_velocity_limits)
+//  , has_acceleration_limits_(has_acceleration_limits)
+//  , has_jerk_limits_(has_jerk_limits)
+//  , min_velocity_(min_velocity)
+//  , max_velocity_(max_velocity)
+//  , min_acceleration_(min_acceleration)
+//  , max_acceleration_(max_acceleration)
+//  , min_jerk_(min_jerk)
+//  , max_jerk_(max_jerk)
+//  {
+//  }
+//
+//  SpeedLimiterParams(comn_pkg::SpeedLimiter speed_limiter){
+//    has_velocity_limits_ = speed_limiter.has_velocity_limits;
+//    has_acceleration_limits_ = speed_limiter.has_acceleration_limits;
+//    has_jerk_limits_ = speed_limiter.has_jerk_limits_;
+//    max_velocity_ = speed_limiter.max_velocity;
+//    min_velocity_ = speed_limiter.min_velocity;
+//    max_acceleration_ = speed_limiter.max_acceleration;
+//    min_acceleration_ = speed_limiter.min_acceleration;
+//    max_jerk_ = speed_limiter.min_jerk;
+//  }
+//
+//};

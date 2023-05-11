@@ -1,7 +1,5 @@
 #include "img_env.h"
 
-
-
 ImgEnv::ImgEnv()
 {
 
@@ -14,6 +12,26 @@ ImgEnv::ImgEnv()
     ROS_INFO("Wait for the python environment to initialize!");
 }
 
+//void ImgEnv::oncmd(const char *cmd)
+//{
+//    float f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
+//    int d1, d2;
+//    char str1[50] = "";
+//    char str2[50] = "";
+//    char str3[50] = "";
+//    char str4[50] = "";
+//    if (PEEK_CMD(cmd, "show"))
+//    {
+//        if (is_show_gui_)
+//            is_show_gui_ = false;
+//        else
+//            is_show_gui_ = true;
+//    }
+//    else if (PEEK_CMD(cmd, "record"))
+//    {
+//        pub_record_ = true;
+//    }
+//}
 void ImgEnv::_init_colors(){
     colors_.push_back(Vec3b(255, 179, 0)); // vivid_yellow
     colors_.push_back(Vec3b(128, 62, 117)); // strong_purple
@@ -72,6 +90,7 @@ void ImgEnv::_init(comn_pkg::Env &msg_env)
     SceneFactory scene_f = SceneFactory();// todo add boudaries
 
     pedscene = scene_f.makeAscene(msg_env.ped_scene_type, pedscene_double_param, pedscene_vecdouble_param);
+    pedscene->scene_name_ = msg_env.ped_scene_type;
 
     _init_env_map(msg_env);
     _init_ped(msg_env.peds, peds_);
@@ -111,6 +130,14 @@ void ImgEnv::_init_robot(vector<comn_pkg::Agent> &msg_robots, vector<Agent> &rob
             robot.view_max_dist_ = view_max_dist_;
             robot.sensor_base_.x = msg_robots[j].sensor_cfg[0];
             robot.sensor_base_.y = msg_robots[j].sensor_cfg[1];
+            // speed limiter
+            SpeedLimiter speed_limiter_v_ = SpeedLimiter(msg_robots[j].speed_limiter_v);
+            SpeedLimiter speed_limiter_w_ = SpeedLimiter(msg_robots[j].speed_limiter_w);
+//          speed_limiter_v_.has_acceleration_limits = true;
+//          speed_limiter_v_.max_acceleration = 2.0;
+//          speed_limiter_v_.min_acceleration = -2.0;
+            robot.init_speed_limiter_v(speed_limiter_v_);
+            robot.init_speed_limiter_w(speed_limiter_w_);
             robots_.push_back(robot);
     }
 }
@@ -121,6 +148,7 @@ void ImgEnv::_init_ped(vector<comn_pkg::Agent> &msg_peds, vector<PedAgent> &peds
     {
             PedAgent ped(msg_peds[k].ktype, step_hz_);
             ped.max_speed = msg_peds[k].max_speed;
+            // TODO 下面3行一行搞定。
             vector<double> ped_size;
             for (int m = 0; m < msg_peds[k].size.size(); m++)
                 ped_size.push_back(msg_peds[k].size[m]);
@@ -133,7 +161,7 @@ void ImgEnv::_init_ped(vector<comn_pkg::Agent> &msg_peds, vector<PedAgent> &peds
 
 bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Response &res){
     private_nh.param("show_gui", is_show_gui_, is_show_gui_);
-
+    step_ = 0 ;
     // reset obs
     pedscene->clearObs();
     EnvMap_maps_.obs_map_ = EnvMap_maps_.static_map_;
@@ -143,6 +171,7 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
         // 提取python生成的obs信息
         comn_pkg::Agent obs_msg = req.obstacles[i];
         Agent obs("obs", view_resolution_);
+        // TODO 下面三行应该有一句话的方法
         vector<double> obs_size;
         for (int j = 0; j < obs_msg.size.size(); j++)
             obs_size.push_back(obs_msg.size[j]);
@@ -159,13 +188,15 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
         double pax, pay, pbx, pby;
         obs.get_corners(pax, pay, pbx, pby);
 
-        pedscene->addObs(pax, pay, pbx, pby);
+        if(! req.ignore_obstacle)
+            pedscene->addObs(pax, pay, pbx, pby);
     }
 
     EnvMap_maps_.traj_map_ = EnvMap_maps_.obs_map_;
 
     cvtColor(EnvMap_maps_.traj_map_.map_, EnvMap_maps_.traj_map_.map_, COLOR_GRAY2BGR);
 
+    // TODO reinit pub_record_
     if (pub_record_)
         {
             EnvMap_maps_.peds_traj_map_ = EnvMap_maps_.obs_map_;
@@ -188,6 +219,7 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
 
     for (int i=0; i<req.peds.size(); i++)
     {
+        // TODO env.peds = req.peds;
         eps_res_msg.peds_res[i].info = req.peds[i];
         eps_res_msg.peds_res[i].poses.clear();
         eps_res_msg.peds_res[i].vs.clear();
@@ -211,11 +243,15 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
         pedscene->setWayPoint(i, ped_msg.trajectory, ped_goal.x, ped_goal.y);
         peds_[i].trajectory_.clear();
         peds_[i].trajectory_ = ped_msg.trajectory;
+        peds_[i].trajectory_v_.clear();
+        peds_[i].trajectory_v_ = ped_msg.trajectory_v;
+
         peds_[i].cur_traj_index_ = 0;
     }
     
     for (int i = 0; i < robot_total_; i++)
     {
+        // TODO put into init
         string robot_name = req.robots[i].name;
         eps_res_msg.robots_res[i].info = req.robots[i];
 //        eps_res_msg.robots_res[i].info.shape = robots_[i].shape_;
@@ -244,29 +280,29 @@ bool ImgEnv::_reset(comn_pkg::ResetEnv::Request &req, comn_pkg::ResetEnv::Respon
             0.0, 0.0);
         }
     }
-    //
-
-    
-
     pedscene->processObs();
-
     // TODO how to deal with return robot_states in multi spin? // loop
     view_agent();
     get_states(res.robot_states);
-    // todo GUI
-
     if (is_show_gui_){
         show_gui();
     }
 
     return true;
-
-
-
 }
 
-bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res)
-{   vector<RVO::Vector2> next_goals;
+void ImgEnv::_step_ped(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res){
+    if (pedscene->scene_name_ == "dataset"){
+        _step_ped_dataset(req, res);
+    }
+    else{
+        // go to rvo or sfm
+        _step_ped_normal(req, res);
+    }
+}
+
+void ImgEnv::_step_ped_normal(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res){
+    vector<RVO::Vector2> next_goals;
     for(int i = 0 ;i<peds_.size();i++){
 //        if (peds_[i].cur_traj_index_ == -1 || peds_[i].trajectory_.size() == 0 || (peds_[i].arrive(peds_[i].trajectory_[-1])))
 //        {
@@ -280,9 +316,7 @@ bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response 
             geometry_msgs::Point cur_ped_goal = peds_[i]._get_cur_goal();
             next_goals.push_back(RVO::Vector2(cur_ped_goal.x, cur_ped_goal.y));
 //        }
-        
     }
-
     vector<RVO::Vector2> ps_;
     vector<float> rs_;
         // probability of ped respond to beep
@@ -309,7 +343,6 @@ bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response 
     pedscene->step(next_goals, ps_, rs_);
     for (int i = 0; i < peds_.size(); i++)
     {
-
         double vx, vy, yaw;
         geometry_msgs::Pose p_msg;
         pedscene->getNewPosAndVel(p_msg, i, vx, vy);
@@ -322,15 +355,44 @@ bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response 
         eps_res_msg.peds_res[i].vs.push_back(vx);
         eps_res_msg.peds_res[i].v_ys.push_back(vy);
         eps_res_msg.peds_res[i].poses.push_back(p_msg);
-
     }
+}
 
+void ImgEnv::_step_ped_dataset(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res){
+    for (int i = 0; i < peds_.size(); i++)
+    {
+        int tmp_traj_index;
+        if (step_ >= peds_[i].trajectory_.size())
+            tmp_traj_index = peds_[i].trajectory_.size() - 1;
+        else
+            tmp_traj_index = step_;
+        double vx, vy, yaw;
+        vx = peds_[i].trajectory_v_[tmp_traj_index].x;
+        vy = peds_[i].trajectory_v_[tmp_traj_index].y;
+        yaw= atan2(vy, vx);
+        Point3d p_robot_pose_(peds_[i].trajectory_[tmp_traj_index].x, peds_[i].trajectory_[tmp_traj_index].y, yaw);
+        peds_[i].set_position(p_robot_pose_);
+        peds_[i].vx = vx;
+        peds_[i].vy = vy;
+        peds_[i].update_bbox();
+
+        eps_res_msg.peds_res[i].vs.push_back(vx);
+        eps_res_msg.peds_res[i].v_ys.push_back(vy);
+        geometry_msgs::Pose p_msg;
+        p_msg.position.x = p_robot_pose_.x;
+        p_msg.position.y = p_robot_pose_.y;
+        eps_res_msg.peds_res[i].poses.push_back(p_msg);
+    }
+}
+
+void ImgEnv::_step_robot(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res){
     for (int i = 0; i < req.robots.size(); i++)
     {
         comn_pkg::Agent robot_msg = req.robots[i];
         if (robot_msg.alive == true)
         {
             // step
+            // TODO eps_res_msg 整成一个函数， 这一段只需要cmd这一行以及处理eps_res_msg的就够了
             bool is_arrive = robots_[i].cmd(robot_msg.v, robot_msg.w, robot_msg.v_y);
             eps_res_msg.robots_res[i].vs.push_back(robot_msg.v);
             eps_res_msg.robots_res[i].ws.push_back(robot_msg.w);
@@ -351,9 +413,108 @@ bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response 
         robots_[i].get_corners(pax, pay, pbx, pby);
         // 对行人来说 机器人也是障碍物
         if(relation_ped_robo == 1)
-            pedscene->setRobotPos(i, pax, pay, pbx, pby, robot_msg.init_pose.position.x, robot_msg.init_pose.position.y,
+            pedscene->setRobotPos(i, pax, pay, pbx, pby, robots_[i].robot_pose_.x, robots_[i].robot_pose_.y,
             robots_[i].vx, robots_[i].vy);
     }
+}
+
+bool ImgEnv::_step(comn_pkg::StepEnv::Request &req, comn_pkg::StepEnv::Response &res)
+{
+    _step_ped(req, res);
+    _step_robot(req, res);
+
+//    vector<RVO::Vector2> next_goals;
+//    for(int i = 0 ;i<peds_.size();i++){
+////        if (peds_[i].cur_traj_index_ == -1 || peds_[i].trajectory_.size() == 0 || (peds_[i].arrive(peds_[i].trajectory_[-1])))
+////        {
+////            peds_[i].cur_traj_index_ = -1;
+////            next_goals.push_back(RVO::Vector2(peds_[i].target_pose_.x, peds_[i].target_pose_.y));
+////        }
+////        else
+////        {
+//            if (peds_[i].arrive(peds_[i].trajectory_[peds_[i].cur_traj_index_]))
+//                peds_[i].cur_traj_index_ += 1;
+//            geometry_msgs::Point cur_ped_goal = peds_[i]._get_cur_goal();
+//            next_goals.push_back(RVO::Vector2(cur_ped_goal.x, cur_ped_goal.y));
+////        }
+//
+//    }
+//
+//    vector<RVO::Vector2> ps_;
+//    vector<float> rs_;
+//        // probability of ped respond to beep
+//        for (int j = 0; j < req.robots.size(); j++)
+//        {
+//            bool is_beep = false;
+//            robots_[j].beep = 0;
+//            if (rand() / double(RAND_MAX) < ped_ca_p){
+//                double beep_radius = req.robots[j].v_y;
+//                if (beep_radius > 0)
+//                   {
+//                        Point3d rpose = robots_[j].robot_pose_;
+//                        ps_.push_back(RVO::Vector2(rpose.x, rpose.y));
+//                        rs_.push_back(beep_r);
+//                        is_beep = true;
+//                        robots_[j].beep = 1;
+//                   }
+//            }
+//            if (is_beep == false){
+//                ps_.push_back(RVO::Vector2(0, 0));
+//                rs_.push_back(0.0);
+//            }
+//        }
+//    pedscene->step(next_goals, ps_, rs_);
+
+
+//    // TODO
+//    for (int i = 0; i < peds_.size(); i++)
+//    {
+//
+//        double vx, vy, yaw;
+//        geometry_msgs::Pose p_msg;
+//        pedscene->getNewPosAndVel(p_msg, i, vx, vy);
+//        Point3d p_robot_pose_(p_msg.position.x, p_msg.position.y, yaw);
+//        peds_[i].set_position(p_robot_pose_);
+//        peds_[i].vx = vx;
+//        peds_[i].vy = vy;
+//        peds_[i].update_bbox();
+//
+//        eps_res_msg.peds_res[i].vs.push_back(vx);
+//        eps_res_msg.peds_res[i].v_ys.push_back(vy);
+//        eps_res_msg.peds_res[i].poses.push_back(p_msg);
+//
+//    }
+//
+//    for (int i = 0; i < req.robots.size(); i++)
+//    {
+//        comn_pkg::Agent robot_msg = req.robots[i];
+//        if (robot_msg.alive == true)
+//        {
+//            // step
+//            // TODO eps_res_msg 整成一个函数， 这一段只需要cmd这一行以及处理eps_res_msg的就够了
+//            bool is_arrive = robots_[i].cmd(robot_msg.v, robot_msg.w, robot_msg.v_y);
+//            eps_res_msg.robots_res[i].vs.push_back(robot_msg.v);
+//            eps_res_msg.robots_res[i].ws.push_back(robot_msg.w);
+//            tf::Quaternion q;
+//            q.setRPY(0, 0, robots_[i].robot_pose_.z);
+//            geometry_msgs::Pose p;
+//            p.position.x = robots_[i].robot_pose_.x;
+//            p.position.y = robots_[i].robot_pose_.y;
+//            p.orientation.x = q.getX();
+//            p.orientation.y = q.getY();
+//            p.orientation.z = q.getZ();
+//            p.orientation.w = q.getW();
+//            eps_res_msg.robots_res[i].poses.push_back(p);
+//        }
+//
+//        // [robot cmd 走一步之后, base已经更新]
+//        double pax, pay, pbx, pby;
+//        robots_[i].get_corners(pax, pay, pbx, pby);
+//        // 对行人来说 机器人也是障碍物
+//        if(relation_ped_robo == 1)
+//            pedscene->setRobotPos(i, pax, pay, pbx, pby, robots_[i].robot_pose_.x, robots_[i].robot_pose_.y,
+//            robots_[i].vx, robots_[i].vy);
+//    }
     step_ += 1;
     view_agent();
     get_states(res.robot_states);
@@ -415,6 +576,7 @@ void ImgEnv::get_states(vector<comn_pkg::AgentState>& robot_states)
                 tf::Vector3 ped_v_base=tf_world_base * ped_v;
                 ped_info.px=ped_pos_base.getX();
                 ped_info.py=ped_pos_base.getY();
+
                 ped_info.vx=ped_v_base.getX();
                 ped_info.vy=ped_v_base.getY();
                 ped_info.r_ = peds_[j].sizes_[2];
@@ -433,6 +595,7 @@ void ImgEnv::view_ped(){
     EnvMap_maps_.peds_map_ =  EnvMap_maps_.obs_map_;
     for(int i = 0;i < peds_.size(); i++){
         string ped_name = peds_[i].name_;
+        // TODO 多态
         if (peds_[i].shape_ == "circle")
         {
             peds_[i].draw(EnvMap_maps_.peds_map_, 1, "world_map", peds_[i].bbox_ );
@@ -456,6 +619,7 @@ void ImgEnv::view_ped(){
 
 void ImgEnv::view_robot(){
     for (int i = 0; i < robot_total_; i++){
+    // TODO: using peds_map_;
         robots_[i].global_map_ = EnvMap_maps_.peds_map_;
         for (int j = 0; j < robot_total_; j++)
         {
@@ -469,6 +633,7 @@ void ImgEnv::view_robot(){
             {
                 for (int j = 0; j < robot_total_; j++)
                 {
+                    // TODO: traj_map_ no peds
                     robots_[j].draw_rgb(EnvMap_maps_.traj_map_, colors_[j], "world_map", robots_[j].bbox_);
                 }
             }

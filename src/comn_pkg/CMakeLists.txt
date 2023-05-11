@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(comn_pkg)
 
 find_package(catkin REQUIRED COMPONENTS
@@ -35,15 +35,27 @@ include_directories(
    EnvReset.msg
    EnvInit.msg
    PedInfo.msg
+   SpeedLimiter.msg
  )
 ## Generate services in the 'srv' folder
  add_service_files(
    FILES
+   GetVel.srv
+   SetPose.srv
+   VFHPlan.srv
+   CheckGoal.srv
+   PathPlan.srv
+   MapValue.srv
    ResetEnv.srv
    StepEnv.srv
    InitEnv.srv
    EndEp.srv
  )
+
+add_action_files(
+  FILES
+  PathFollow.action
+)
 
 generate_messages(
   DEPENDENCIES

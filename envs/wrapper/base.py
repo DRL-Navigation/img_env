@@ -4,6 +4,7 @@ import numpy as np
 import math
 import yaml
 import time
+import sys
 
 from typing import *
 from collections import deque
@@ -12,6 +13,7 @@ from copy import deepcopy
 
 from envs.state import ImageState
 from envs.action import *
+from envs.utils import BagRecorder
 
 
 class StatePedVectorWrapper(gym.ObservationWrapper):
@@ -40,15 +42,23 @@ class VelActionWrapper(gym.Wrapper):
 
             self.f = lambda x: self.actions[int(x)] if np.isscalar(x) else ContinuousAction(*x)
         else:
-            self.f = lambda x: ContinuousAction(*x)
+            clip_range = cfg['continuous_actions']
 
-    def step(self, action):
+            def tmp_f(x):
+                y = []
+                for i in range(len(x)):
+                    y.append(np.clip(x[i], clip_range[i][0], clip_range[i][1]))
+                return ContinuousAction(*y)
+            # self.f = lambda x: ContinuousAction(*x)
+            self.f = tmp_f
+
+    def step(self, action: np.ndarray):
         action = self.action(action)
         state, reward, done, info = self.env.step(action)
         info['speeds'] = np.array([a.reverse()[:2] for a in action])
         return state, reward, done, info
 
-    def action(self, actions) -> Iterator[ContinuousAction]:
+    def action(self, actions: np.ndarray) -> List[ContinuousAction]:
         return list(map(self.f, actions))
 
     def reverse_action(self, actions):
@@ -57,7 +67,11 @@ class VelActionWrapper(gym.Wrapper):
 
 
 class MultiRobotCleanWrapper(gym.Wrapper):
+    """
+    有一些robot撞了之后，动作可以继续前向，但是送给网络的数据要过滤掉。
+    """
     is_clean : list
+
     def __init__(self, env, cfg):
         super(MultiRobotCleanWrapper, self).__init__(env)
         self.is_clean = np.array([True] * cfg['agent_num_per_env'])
@@ -81,14 +95,14 @@ class MultiRobotCleanWrapper(gym.Wrapper):
 
 
 class StateBatchWrapper(gym.Wrapper):
-    batch_dict: np.ndarray
+    batch_dict: Dict
 
     def __init__(self, env, cfg):
         print(cfg,flush=True)
         super(StateBatchWrapper, self).__init__(env)
         self.q_sensor_maps = deque([], maxlen=cfg['image_batch']) if cfg['image_batch']>0 else None
         self.q_vector_states = deque([], maxlen=cfg['state_batch']) if cfg['state_batch']>0 else None
-        self.q_lasers = deque([], maxlen=cfg['laser_batch']) if cfg['laser_batch']>0 else None
+        self.q_lasers = deque([], maxlen=max(cfg['laser_batch'], 1) ) if cfg['laser_batch']>= 0 else None
         self.batch_dict = {
             "sensor_maps": self.q_sensor_maps,
             "vector_states": self.q_vector_states,
@@ -121,13 +135,17 @@ class StateBatchWrapper(gym.Wrapper):
         tmp_ = self._concate("vector_states", state.vector_states)
         state.vector_states = tmp_.reshape(tmp_.shape[0], tmp_.shape[1] * tmp_.shape[2])
         # print("vector_states shape", state.vector_states.shape)
-
-
         state.lasers = self._concate("lasers", state.lasers)
         # print("lasers shape:", state.lasers.shape)
         return state
 
+    def _clear_queue(self):
+        for q in self.batch_dict.values():
+            if q is not None:
+                q.clear()
+
     def reset(self, **kwargs):
+        self._clear_queue()
         state = self.env.reset(**kwargs)
         return self.batch_state(state)
 
@@ -216,8 +234,9 @@ class TimeLimitWrapper(gym.Wrapper):
 class InfoLogWrapper(gym.Wrapper):
     def __init__(self, env, cfg):
         super(InfoLogWrapper, self).__init__(env)
-        robot_total = cfg['robot']['total']
-        self.tmp = np.zeros(robot_total, dtype=np.uint8)
+        self.robot_total = cfg['robot']['total']
+        self.tmp = np.zeros(self.robot_total, dtype=np.uint8)
+        self.ped: bool = cfg['ped_sim']['total'] > 0 and cfg['env_type'] == 'robot_nav'
 
     def step(self, action):
         states, reward, done, info = self.env.step(action)
@@ -227,77 +246,67 @@ class InfoLogWrapper(gym.Wrapper):
         info['dones_info'] = np.where(states.is_collisions > 0, states.is_collisions, info['dones_info'])
         info['dones_info'] = np.where(states.is_arrives == 1, 5, info['dones_info'])
         info['all_down'] = self.tmp + sum(np.where(done>0, 1, 0)) == len(done)
+
+        if self.ped:
+            # when robot get close to human, record their speeds.
+            info['bool_get_close_to_human'] = np.where(states.ped_min_dists < 1 , 1 , 0)
+
         return states, reward, done, info
 
 
-
-
-class TestEpisodeWrapper(gym.Wrapper):
-    """
-
-    for one robot
-    """
+class BagRecordWrapper(gym.Wrapper):
     def __init__(self, env, cfg):
-        super(TestEpisodeWrapper, self).__init__(env)
-        self.cur_episode = -1
-        self.max_episodes = cfg["init_pose_bag_episodes"]
-        self.arrive_num = 0
-        self.static_coll_num = 0
-        self.ped_coll_num = 0
-        self.other_coll_num = 0
-        self.steps = 0
-        self.tmp_steps = 0
-        self.stuck_num = 0
-        self.v_sum = 0
-        self.w_sum = 0
-        self.speed_step = 0
+        super(BagRecordWrapper, self).__init__(env)
+        self.bag_recorder = BagRecorder(cfg["bag_record_output_name"])
+        self.record_epochs = int(cfg['bag_record_epochs'])
+        self.episode_res_topic = "/" + cfg['env_name'] + str(cfg['node_id']) + "/episode_res"
+        print("epi_res_topic", self.episode_res_topic, flush=True)
+        self.cur_record_epoch = 0
 
-    def step(self, action):
-        states, reward, done, info = self.env.step(action)
-        self.tmp_steps += 1
-        speeds = info.get("speeds")[0] # suppose only one agent here
-        self.v_sum += speeds[0]
-        self.w_sum += abs(speeds[1])
-        return states, reward, done, info
+        self.bag_recorder.record(self.episode_res_topic)
+
+    def _trans2string(self, dones_info):
+        o: List[str] = []
+        for int_done in dones_info:
+            if int_done == 10:
+                o.append("stuck")
+            elif int_done == 5:
+                o.append("arrive")
+            elif 0 < int_done < 4:
+                o.append("collision")
+            else:
+                raise ValueError
+        print(o, flush=True)
+        return o
 
     def reset(self, **kwargs):
-        self.cur_episode += 1
-        t = kwargs.get('dones_info')
-        if t is not None:
-            t = t[0]
-            self.speed_step += self.tmp_steps
-            if t == 5:
-                self.arrive_num += 1
-                self.steps += self.tmp_steps
-            elif t == 10:
-                self.stuck_num += 1
-            elif t == 1:
-                self.static_coll_num += 1
-            elif t == 2:
-                self.ped_coll_num += 1
-            elif t == 3:
-                self.other_coll_num += 1
-        self.tmp_steps = 0
-        if self.cur_episode == self.max_episodes:
-            print("""
-            arrive_rate: {},
-            static_coll_rate: {},
-            ped_coll_rate: {},
-            other_coll_rate: {},
-            avg_arrive_steps: {},
-            stuck_rate: {},
-            avg_v: {},
-            avg_w:{},
-            """.format(self.arrive_num / self.max_episodes,
-                       self.static_coll_num / self.max_episodes,
-                       self.ped_coll_num / self.max_episodes,
-                       self.other_coll_num / self.max_episodes,
-                       self.steps / max(1, self.arrive_num),
-                       self.stuck_num / self.max_episodes,
-                       self.v_sum / self.speed_step,
-                       self.w_sum / self.speed_step,
-                       ), flush=True)
-
+        if self.cur_record_epoch == self.record_epochs:
+            time.sleep(10)
+            self.bag_recorder.stop()
+        if kwargs.get('dones_info') is not None: # first reset not need
+            self.env.end_ep(self._trans2string(kwargs['dones_info']))
+            self.cur_record_epoch += 1
+        """
+                done info:
+                10: timeout
+                5:arrive
+                1: get collision with static obstacle
+                2: get collision with ped
+                3: get collision with other robot
+                """
+        print(self.cur_record_epoch, flush=True)
         return self.env.reset(**kwargs)
 
+
+class TimeControlWrapper(gym.Wrapper):
+    def __init__(self, env, cfg):
+        super(TimeControlWrapper, self).__init__(env)
+        self.dt = cfg['control_hz']
+
+    def step(self, action):
+        start_time = time.time()
+        states, reward, done, info = self.env.step(action)
+        while time.time() - start_time < self.dt:
+            time.sleep(0.02)
+        return states, reward, done, info
 

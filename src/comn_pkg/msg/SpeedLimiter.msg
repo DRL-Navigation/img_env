@@ -1,0 +1,9 @@
+bool has_velocity_limits
+bool has_acceleration_limits
+bool has_jerk_limits
+float32 min_velocity
+float32 max_velocity
+float32 min_acceleration
+float32 max_acceleration
+float32 min_jerk
+float32 max_jerk

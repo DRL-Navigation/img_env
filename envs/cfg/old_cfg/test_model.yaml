@@ -1,0 +1,14 @@
+models_name: ['mbox1', 'mbox2', 'mbox3', 'cylinder1', 'cylinder2','mbox4','mbox5', 'room']
+models: ['mbox', 'mbox', 'mbox', 'cylinder', 'cylinder', 'mbox', 'mbox', 'room_8']
+model_poses_type: ['fix', 'fix', 'fix', 'fix', 'fix', 'fix', 'fix', 'fix']
+models_radius: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5,0.5,  0] #碰撞半径
+models_pose: [[0,0], [1.5, 1.5], [1.5, -1.5], [-1.5, -1.5], [-1.5, 1.5], [1, 3],[2, 3], [0, 0]]
+
+robot_total: 1
+robot_radius: 0.4
+robot_model_name: kejiarobot
+begin_poses_type: ['fix']
+begin_poses: [[-2.5, -2.5, 1.57]]
+target_poses_type: ['fix']
+target_poses: [[3, 3, 1.57]]
+

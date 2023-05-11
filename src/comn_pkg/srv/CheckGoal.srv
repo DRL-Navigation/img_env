@@ -1,0 +1,4 @@
+int32 robot_index
+geometry_msgs/Point pose
+---
+bool result

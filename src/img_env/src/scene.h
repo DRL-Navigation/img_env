@@ -26,6 +26,7 @@ class Scene{
             relation_ped_robo = params_double["relation_ped_robo"];
             step_hz_ = params_double["step_hz_"];
         };
+        string scene_name_;
         virtual void step(vector<RVO::Vector2> nextgoals,vector<RVO::Vector2> ps_, vector<float> rs_) = 0;
         virtual void addObs(double pax, double pay, double pbx, double pby) = 0;
         virtual void clearObs() = 0;

@@ -1,0 +1,6 @@
+geometry_msgs/PoseStamped start
+geometry_msgs/PoseStamped target
+---
+bool success
+geometry_msgs/PoseStamped[] path
+float32 length

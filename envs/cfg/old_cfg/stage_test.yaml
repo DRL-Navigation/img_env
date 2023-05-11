@@ -1,0 +1,15 @@
+models_name: ['obs1', 'obs2', 'obs3', 'obs4', 'obs5', 'obs6','obs7', 'obs8', 'obs9','obs10', 'obs11', 'obs12']
+models: ['obs1', 'obs2', 'obs3', 'obs4', 'obs5', 'obs6','obs7', 'obs8', 'obs9','obs10', 'obs11', 'obs12']
+model_poses_type: ['range', 'range', 'range', 'range', 'range', 'range', 'range', 'range', 'range', 'range', 'range', 'range']
+models_radius: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,0.5, 0.5, 0.5, 0.5] #碰撞半径
+models_pose: [[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4],[-4, 4, -4, 4]]
+
+robot_total: 1
+robot_radius: 0.5
+robot_model_name: kejia
+begin_poses_type: ['range']
+begin_poses: [[-4, 4, -4, 4]]
+target_poses_type: ['range']
+target_poses: [[-4, 4, -4, 4]]
+
+env_type: stage

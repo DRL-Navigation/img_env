@@ -134,7 +134,7 @@ void Agent::init_pose(const Point3d &pose)
 {
     robot_pose_ = pose;
     odom_pose_ = Point3d(0, 0, 0);
-    last_vw_ = Point2d(0, 0);
+    last0_vw_ = Point2d(0, 0);
     tf_odom_world_.setOrigin(tf::Vector3(pose.x, pose.y, 0));
     tf::Quaternion q;
     q.setRPY(0, 0, pose.z);
@@ -169,22 +169,39 @@ void Agent::get_state(vector<double> &state)
     }
     else if (state_dim_ == 4)
     {
-        state.push_back(last_vw_.x);
-        state.push_back(last_vw_.y);
+        state.push_back(last0_vw_.x);
+        state.push_back(last0_vw_.y);
+    }
+    else if (state_dim_ == 5)
+    {
+        tf::Quaternion q = tf_target_base.getRotation();
+        double roll, pitch, yaw;
+        tf::Matrix3x3(q).getRPY(roll, pitch, yaw);
+        state.push_back(yaw);
+        state.push_back(last0_vw_.x);
+        state.push_back(last0_vw_.y);
     }
 }
 
 bool Agent::cmd(double v, double w,double v_y)
 {
+    // speed limit
+    limiter_lin_.limit(v, last0_vw_.x, last1_vw_.x, step_hz_);
+    limiter_ang_.limit(w, last0_vw_.y, last1_vw_.y, step_hz_);
+
+    last1_vw_ = last0_vw_;
+
+    last0_vw_.x = v;
+    last0_vw_.y = w;
+
     bool is_arrive = false;
-    last_vw_.x = v;
-    last_vw_.y = w;
     if (ktype_ == "diff")
     {
         odom_pose_ = robot_pose_;
         double cur_control = 0;
         while(cur_control <= step_hz_)
         {
+            // todo 这里角度是360吗
             odom_pose_.x += v * control_hz_ * cos(odom_pose_.z);
             odom_pose_.y += v * control_hz_ * sin(odom_pose_.z);
             vx = v  * cos(odom_pose_.z);

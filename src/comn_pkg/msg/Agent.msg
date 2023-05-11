@@ -12,3 +12,8 @@ float32 max_speed
 string env_name
 float32[] sensor_cfg
 geometry_msgs/Point[] trajectory
+# for ped dataset
+geometry_msgs/Point[] trajectory_v
+
+comn_pkg/SpeedLimiter speed_limiter_v
+comn_pkg/SpeedLimiter speed_limiter_w

@@ -1,0 +1,12 @@
+#goal definition
+geometry_msgs/Point[] path
+---
+#result definition
+int32 result
+---
+#feedback
+int32 id
+float32 distance
+float32 v
+float32 w
+std_msgs/String status
