@@ -154,6 +154,18 @@ url = {https://www.mdpi.com/1424-8220/20/17/4836}
 }
 ```
 
+### More DRL navigation work
+```
+@article{qiu2023training,
+  title={Training A Non-Cooperator to Identify Vulnerabilities and Improve Robustness for Robot Navigation},
+  author={Qiu, Quecheng and Zhang, Xuyang and Yao, Shunyi and Chen, Guangda and Hua, Bei and Ji, Jianmin and others},
+  journal={IEEE Robotics and Automation Letters},
+  year={2023},
+  publisher={IEEE}
+}
+```
+
+
 ### Reproduce our works
 **chen2020distributed** Sensors-20
 ```
